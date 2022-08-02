@@ -217,4 +217,6 @@ int main()
     al_destroy_bitmap(dirt);
     al_destroy_bitmap(platform);
     al_destroy_bitmap(jg1);
+    printf("hola");
+    printf("hola mundo");
 }
