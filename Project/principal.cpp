@@ -11,7 +11,7 @@
 #include <allegro5/file.h>
 #include "declaraciones-estructuras.h"
 #include "archivos.h"
-
+#include "dibujado.h"
 int main()
 {
     /*_______________________________________________________________________________________________
@@ -26,7 +26,7 @@ int main()
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////INICIAR ARCHIVO///////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    tipo = ABRIR_MAPA(mapa, tipo);       //TIPO: decide si es mapa 1 o 2.
+    tipo = ABRIR_MAPA(mapa, tipo);       //TIPO: decide si es mapa 1 o 2, se usará más adelante...
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////INICIAR ALLEGRO///////////////////////////////////////////
     _________________________________________________________________________________________________*/
@@ -51,12 +51,19 @@ int main()
     ALLEGRO_BITMAP* perfil = al_load_bitmap("profile.bmp");
     ALLEGRO_BITMAP* pwup = al_load_bitmap("power_up.bmp");
     ALLEGRO_BITMAP* bar = al_load_bitmap("bar.bmp");
-    ALLEGRO_BITMAP* jg0_bitmap = al_load_bitmap("jg0_momentaneo.bmp");
 
-    //al_draw_bitmap_region(jg0_bitmap, tamaño1234, destino12);                     IMPORTANTE
+    ALLEGRO_BITMAP* jg0_Idle = al_load_bitmap("jg0_Idle_Walk.bmp");
+    ALLEGRO_BITMAP* jg0_Walk = al_load_bitmap("jg0_Idle_Walk.bmp");
+    ALLEGRO_BITMAP* jg0_Jump = al_load_bitmap("jg0_Jump.bmp");
+    ALLEGRO_BITMAP* jg0_Punch = al_load_bitmap("jg0_Punch.bmp");
+    ALLEGRO_BITMAP* jg0_Damage = al_load_bitmap("jg0_Damage.bmp");
 
+    ALLEGRO_BITMAP* jg1_Idle = al_load_bitmap("jg1_Idle_Walk.bmp");
+    ALLEGRO_BITMAP* jg1_Walk = al_load_bitmap("jg1_Idle_Walk.bmp");
+    ALLEGRO_BITMAP* jg1_Jump = al_load_bitmap("jg1_Jump.bmp");
+    ALLEGRO_BITMAP* jg1_Punch = al_load_bitmap("jg1_Punch.bmp");
+    ALLEGRO_BITMAP* jg1_Damage = al_load_bitmap("jg1_Damage.bmp");
     /*
-       * jg2, * jg3,                                           //Fases del jugador
        * fut, * bask, * tennis, * american, * cannon, * boss,  //Enemigos
        * llave_inglesa, * engranaje, * bateria;                //Puntos
     */
@@ -71,6 +78,7 @@ int main()
         jg[0].posx, jg[0].posy, jg[0].salto, jg[0].gravity, jg[0].powerup, jg[0].col_x, jg[0].col_y, 
         jg[0].vida, jg[0].lvlup
     );
+
     /*_______________________________________________________________________________________________
     ////////////////////////////////////INICIALIZAR POSICIÓN BLOCKS//////////////////////////////////
     _________________________________________________________________________________________________*/
@@ -127,7 +135,7 @@ int main()
             key[event.keyboard.keycode] &= KEY_RELEASED;
             break;
         }
-        if (!sky || !jg0_bitmap || !platform || !dirt || !pwup || !perfil || !bar)
+        if (!sky || !platform || !dirt || !pwup || !perfil || !bar || !jg0_Idle)
         {
             printf("NO SE CARGÓ");
             return 0;
@@ -136,44 +144,19 @@ int main()
         {
             //Aquí debería partir la colisión creo...
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            for (i = 0; i < SIZE; i++)
-            {
-                for (j = 0; j < SIZE; j++)
-                {
-                    if (mapa[i][j] == '0')
-                    {
-                        al_draw_bitmap(sky, j * PXL_W, i * PXL_H, 0);
-                    }
-                    if (mapa[i][j] == 'D')
-                    {
-                        al_draw_bitmap(dirt, j * PXL_W, i * PXL_H, 0);
-                    }
-                    if (mapa[i][j] == 'p')
-                    {
-                        al_draw_bitmap(platform, j * PXL_W, i * PXL_H, 0);
-                    }
-                    if (mapa[i][j] == 'O')
-                    {
-                        al_draw_bitmap(perfil, j * PXL_W, i * PXL_H, 0);
-                    }
-                    if (mapa[i][j] == 'U')
-                    {
-                        al_draw_bitmap(pwup, j * PXL_W, i * PXL_H, 0);
-                        al_convert_mask_to_alpha(jg0_bitmap, al_map_rgb(120, 8, 249));
-                    }
-                    if (mapa[i][j] == 'B')
-                    {
-                        al_draw_bitmap(bar, j * PXL_W, i * PXL_H, 0);
-                    }
-                }
-            }
+            DRAW_MAP_SINCE_MAPA(mapa, sky, platform, dirt, pwup, perfil, bar, jg0_Idle);
+            
             if (jg[0].posy >= (HEIGHT - (PXL_H * 2)))                 //LIMITE INFERIOR, por ahora es sobre el pixel de suelo pues aun no hay colisiones implementadas.
                 jg[0].posy = HEIGHT - (PXL_H * 2);
-            al_draw_bitmap(jg0_bitmap, jg[0].posx, jg[0].posy, 0);
-            al_convert_mask_to_alpha(jg0_bitmap, al_map_rgb(121, 9, 250));
+
+            al_draw_bitmap_region(jg0_Idle, 0, 0, PXL_W, PXL_H, jg[0].posx, jg[0].posy, 0);
+            al_convert_mask_to_alpha(jg0_Idle, al_map_rgb(107, 41, 115));
             al_flip_display();
         }
     }
+    /*_______________________________________________________________________________________________
+    /////////////////////////////////////////////FINALIZAR////////////////////////////////////////////
+    _________________________________________________________________________________________________*/
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
@@ -183,6 +166,15 @@ int main()
     al_destroy_bitmap(bar);
     al_destroy_bitmap(pwup);
     al_destroy_bitmap(perfil);
-    al_destroy_bitmap(jg0_bitmap);
+    al_destroy_bitmap(jg0_Idle);
+    al_destroy_bitmap(jg0_Walk);
+    al_destroy_bitmap(jg0_Jump);
+    al_destroy_bitmap(jg0_Damage);
+    al_destroy_bitmap(jg0_Punch);
+    al_destroy_bitmap(jg1_Idle);
+    al_destroy_bitmap(jg1_Walk);
+    al_destroy_bitmap(jg1_Jump);
+    al_destroy_bitmap(jg1_Damage);
+    al_destroy_bitmap(jg1_Punch);
     return 0;
 }

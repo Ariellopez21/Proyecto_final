@@ -29,6 +29,9 @@
     <ClInclude Include="archivos.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="dibujado.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Mapa_inicial.txt">
@@ -58,6 +61,30 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="jg0_momentaneo.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="jg0_Idle_Walk.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="jg0_Punch.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="jg0_Jump.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="jg0_Damage.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="jg1_Idle_Walk.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="jg1_Damage.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="jg1_Jump.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="jg1_Punch.bmp">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>
