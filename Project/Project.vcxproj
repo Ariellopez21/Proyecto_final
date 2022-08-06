@@ -147,10 +147,12 @@
     <ClCompile Include="principal.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Declaraciones-estructuras.h" />
+    <ClInclude Include="archivos.h" />
+    <ClInclude Include="declaraciones-estructuras.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Mapa_inicial.txt" />
+    <Text Include="Mapa_jefe.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="bar.bmp" />

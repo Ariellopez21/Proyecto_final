@@ -9,16 +9,16 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_memfile.h>
 #include <allegro5/file.h>
-#include "Declaraciones-estructuras.h"
+#include "declaraciones-estructuras.h"
+#include "archivos.h"
 
 int main()
 {
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////DECLARAR VARIABLES////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    FILE* fmapa0;
-    int L_i = 0, L_j = 0, x = 0, y = 0, i = 0, j = 0, k = 0;
-    char mapa0[SIZE][SIZE], basura;
+    int x = 0, y = 0, i = 0, j = 0, k = 0, tipo = 1;
+    char mapa[SIZE][SIZE];
     bool done = false;
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
@@ -26,26 +26,7 @@ int main()
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////INICIAR ARCHIVO///////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    fmapa0 = fopen("Mapa_inicial.txt", "r");
-    if (fmapa0 == NULL)
-    {
-        printf("ERROR");
-        return 0;
-    }
-    for (L_i = 0; L_i < SIZE; L_i++)
-    {
-        for (L_j = 0; L_j < SIZE; L_j++)
-            fscanf(fmapa0, "%c", &mapa0[L_i][L_j]); 
-        fscanf(fmapa0, "%c", &basura);
-    }
-    for (L_i = 0; L_i < SIZE; L_i++)
-    {
-        for (L_j = 0; L_j < SIZE; L_j++)
-            printf("%c", mapa0[L_i][L_j]);
-        printf("\n");
-    }
-    printf("%c", mapa0[L_i][L_j]);
-    fclose(fmapa0);
+    tipo = ABRIR_MAPA(mapa, tipo);       //TIPO: decide si es mapa 1 o 2.
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////INICIAR ALLEGRO///////////////////////////////////////////
     _________________________________________________________________________________________________*/
@@ -159,28 +140,28 @@ int main()
             {
                 for (j = 0; j < SIZE; j++)
                 {
-                    if (mapa0[i][j] == '0')
+                    if (mapa[i][j] == '0')
                     {
                         al_draw_bitmap(sky, j * PXL_W, i * PXL_H, 0);
                     }
-                    if (mapa0[i][j] == 'D')
+                    if (mapa[i][j] == 'D')
                     {
                         al_draw_bitmap(dirt, j * PXL_W, i * PXL_H, 0);
                     }
-                    if (mapa0[i][j] == 'p')
+                    if (mapa[i][j] == 'p')
                     {
                         al_draw_bitmap(platform, j * PXL_W, i * PXL_H, 0);
                     }
-                    if (mapa0[i][j] == 'O')
+                    if (mapa[i][j] == 'O')
                     {
                         al_draw_bitmap(perfil, j * PXL_W, i * PXL_H, 0);
                     }
-                    if (mapa0[i][j] == 'U')
+                    if (mapa[i][j] == 'U')
                     {
                         al_draw_bitmap(pwup, j * PXL_W, i * PXL_H, 0);
                         al_convert_mask_to_alpha(jg0_bitmap, al_map_rgb(120, 8, 249));
                     }
-                    if (mapa0[i][j] == 'B')
+                    if (mapa[i][j] == 'B')
                     {
                         al_draw_bitmap(bar, j * PXL_W, i * PXL_H, 0);
                     }

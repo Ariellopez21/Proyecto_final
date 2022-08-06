@@ -23,12 +23,18 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Declaraciones-estructuras.h">
+    <ClInclude Include="declaraciones-estructuras.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="archivos.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Mapa_inicial.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="Mapa_jefe.txt">
       <Filter>Archivos de recursos</Filter>
     </Text>
   </ItemGroup>
