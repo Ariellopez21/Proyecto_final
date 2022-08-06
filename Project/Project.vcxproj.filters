@@ -22,4 +22,37 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Declaraciones-estructuras.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Mapa_inicial.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="sky.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="dirt.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="bar.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="platform.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="profile.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="power_up.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="jg0_momentaneo.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

@@ -75,12 +75,14 @@
     <Allegro_AddonFont>true</Allegro_AddonFont>
     <Allegro_AddonColor>true</Allegro_AddonColor>
     <Allegro_AddonMemfile>true</Allegro_AddonMemfile>
+    <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Allegro_AddonImage>true</Allegro_AddonImage>
     <Allegro_AddonFont>true</Allegro_AddonFont>
     <Allegro_AddonColor>true</Allegro_AddonColor>
     <Allegro_AddonMemfile>true</Allegro_AddonMemfile>
+    <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -143,6 +145,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="principal.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Declaraciones-estructuras.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Mapa_inicial.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bar.bmp" />
+    <Image Include="dirt.bmp" />
+    <Image Include="jg0_momentaneo.bmp" />
+    <Image Include="platform.bmp" />
+    <Image Include="power_up.bmp" />
+    <Image Include="profile.bmp" />
+    <Image Include="sky.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
