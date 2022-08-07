@@ -35,6 +35,9 @@
     <ClInclude Include="variables_globales.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="funciones_menu.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Mapa_inicial.txt">

@@ -150,6 +150,7 @@
     <ClInclude Include="archivos.h" />
     <ClInclude Include="estructuras_funciones.h" />
     <ClInclude Include="dibujado.h" />
+    <ClInclude Include="funciones_menu.h" />
     <ClInclude Include="variables_globales.h" />
   </ItemGroup>
   <ItemGroup>
