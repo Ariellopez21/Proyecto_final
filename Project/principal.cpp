@@ -13,7 +13,9 @@
 #include "estructuras_funciones.h"
 #include "archivos.h"
 #include "dibujado.h"
-void func_menu();
+bool func_menu();
+bool func_rank();
+bool func_instructions();
 int main()
 {
     /*_______________________________________________________________________________________________
@@ -102,15 +104,12 @@ int main()
     /*________________________________________________________________________________________________
     /////////////////////////////////////////INICIA EL JUEGO//////////////////////////////////////////
     _________________________________________________________________________________________________*/
+    done = func_menu();
+    func_instructions();
     al_start_timer(timer);
     while (!done)
     {
-        func_menu();
-        //->func_rank();
-        //->func_innstrucciones()
-        //etc...
         al_wait_for_event(queue, &event);
-
         switch (event.type)
         {
         case ALLEGRO_EVENT_TIMER:                                       //MOV. JUGADOR
@@ -175,25 +174,145 @@ int main()
             al_flip_display();
         }
     }
-    /*_______________________________________________________________________________________________
-    /////////////////////////////////////////////FINALIZAR////////////////////////////////////////////
-    _________________________________________________________________________________________________*/
     exit_game();
     return 0;
 }
 
-void func_menu()
+bool func_menu()
 {
+    int mouseX = 10, mouseY = 10;
+    bool botones[] = { 0, 0, 0, 0 };
+    botones[0] = true;
+    al_install_mouse();
+    al_start_timer(timer);
     while (!done)
     {
+        al_wait_for_event(queue, &event);
         switch (event.type)
         {
+        case ALLEGRO_EVENT_DISPLAY_CLOSE:
+            done = true;
+            break;
+        case ALLEGRO_EVENT_MOUSE_AXES:
+            mouseX = event.mouse.x;
+            mouseY = event.mouse.y;
+            if (mouseX >= (106 * 2) && (mouseX <= 188 * 2) && mouseY >= (130 * 2) && (mouseY <= 162 * 2))    //START
+                botones[1] = true;                 //USAR BITMAP MENU_PRINCIPAL1                 
+            else
+                botones[1] = false;
 
+            if (mouseX >= (107 * 2) && mouseX <= (189 * 2) && mouseY >= (198 * 2) && mouseY <= (230 * 2))    //RANKING
+                botones[2] = true;                 //USAR BITMAP MENU_PRINCIPAL2
+            else
+                botones[2] = false;
+
+            if (mouseX >= (107 * 2) && mouseX <= (189 * 2) && mouseY >= (264 * 2) && mouseY <= (296 * 2))    //EXIT
+                botones[3] = true;                 //USAR BITMAP MENU_PRINCIPAL3
+            else
+                botones[3] = false;
+
+            if (!botones[1] && !botones[2] && !botones[3])
+                botones[0] = true;
+            else
+                botones[0] = false;
+            break;
+        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+            if (mouseX >= (106 * 2) && (mouseX <= 188 * 2) && mouseY >= (130 * 2) && (mouseY <= 162 * 2))    //START             
+                if (event.mouse.button & 1)
+                    return done;
+            if (mouseX >= (107 * 2) && mouseX <= (189 * 2) && mouseY >= (198 * 2) && mouseY <= (230 * 2))    //RANKING
+                if (event.mouse.button & 1)
+                    func_rank();
+            if (mouseX >= (107 * 2) && mouseX <= (189 * 2) && mouseY >= (264 * 2) && mouseY <= (296 * 2))    //EXIT
+                if (event.mouse.button & 1)
+                    done = true;
+            break;
         }
         if (al_is_event_queue_empty(queue) && (!done))
         {
             al_clear_to_color(al_map_rgb(0, 0, 0));
+            if(botones[0])
+                al_draw_scaled_bitmap(menu_principal, 0, 0, 300, 400, 0, 0, WIDTH, HEIGHT, 0);
+            else if(botones[1])
+                al_draw_scaled_bitmap(menu_principal1, 0, 0, 300, 400, 0, 0, WIDTH, HEIGHT, 0);
+            else if(botones[2])
+                al_draw_scaled_bitmap(menu_principal2, 0, 0, 300, 400, 0, 0, WIDTH, HEIGHT, 0);
+            else if(botones[3])
+                al_draw_scaled_bitmap(menu_principal3, 0, 0, 300, 400, 0, 0, WIDTH, HEIGHT, 0);
             al_flip_display();
         }
     }
+    return done;
+}
+bool func_rank()
+{
+    int mouseX = 10, mouseY = 10;
+    al_install_mouse();
+    al_start_timer(timer);
+    while (!done)
+    {
+        al_wait_for_event(queue, &event);
+        switch (event.type)
+        {
+        case ALLEGRO_EVENT_DISPLAY_CLOSE:
+            done = true;
+            break;
+        case ALLEGRO_EVENT_MOUSE_AXES:
+            mouseX = event.mouse.x;
+            mouseY = event.mouse.y;
+            break;
+        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+            if (mouseX >= (35 * 2) && (mouseX <= 69 * 2) && mouseY >= (23 * 2) && (mouseY <= 52 * 2))    //BACK             
+                if (event.mouse.button & 1)
+                    return done;
+            break;
+        }
+        if (al_is_event_queue_empty(queue) && (!done))
+        {
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+            al_draw_scaled_bitmap(menu_ranking, 0, 0, 300, 400, 0, 0, WIDTH, HEIGHT, 0);
+            al_flip_display();
+        }
+    }
+    return done;
+}
+bool func_instructions()
+{
+    int mouseX = 10, mouseY = 10;
+    bool botones = false;
+    al_install_mouse();
+    al_start_timer(timer);
+    while (!done)
+    {
+        al_wait_for_event(queue, &event);
+        switch (event.type)
+        {
+        case ALLEGRO_EVENT_DISPLAY_CLOSE:
+            done = true;
+            break;
+        case ALLEGRO_EVENT_MOUSE_AXES:
+            mouseX = event.mouse.x;
+            mouseY = event.mouse.y;
+            if (mouseX >= (232 * 2) && (mouseX <= 292 * 2) && mouseY >= (338 * 2) && (mouseY <= 390 * 2))    //START
+                botones = true;                 //USAR BITMAP MENU_INSTRUCTIONS1                 
+            else
+                botones = false;
+            break;
+        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+            if (mouseX >= (232 * 2) && (mouseX <= 292 * 2) && mouseY >= (338 * 2) && (mouseY <= 390 * 2))    //BACK             
+                if (event.mouse.button & 1)
+                    return done;
+            break;
+        }
+        if (al_is_event_queue_empty(queue) && (!done))
+        {
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+            if(botones)
+                al_draw_scaled_bitmap(menu_instructions1, 0, 0, 300, 400, 0, 0, WIDTH, HEIGHT, 0);
+            else
+                al_draw_scaled_bitmap(menu_instructions, 0, 0, 300, 400, 0, 0, WIDTH, HEIGHT, 0);
+            al_flip_display();
+        }
+    }
+    return done;
 }
