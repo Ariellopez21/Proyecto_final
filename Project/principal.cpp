@@ -9,9 +9,11 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_memfile.h>
 #include <allegro5/file.h>
-#include "declaraciones-estructuras.h"
+#include "variables_globales.h"
+#include "estructuras_funciones.h"
 #include "archivos.h"
 #include "dibujado.h"
+void func_menu();
 int main()
 {
     /*_______________________________________________________________________________________________
@@ -20,7 +22,6 @@ int main()
     int x = 0, y = 0, i = 0, j = 0, k = 0, tipo = 1;
     int mouseX = 10, mouseY = 10, MouseSpeed = 5;
     char mapa[SIZE][SIZE];
-    bool done = false;
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
     bool flag_key_up_true = false;
@@ -37,12 +38,14 @@ int main()
     al_init_font_addon();
     al_install_keyboard();
     al_install_mouse();
-    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 30.0);
-    ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
-    ALLEGRO_DISPLAY* disp = al_create_display(WIDTH, HEIGHT);
+
     al_set_window_position(disp, 800, 100);
     al_set_window_title(disp, "Planeta Gol!");
-    ALLEGRO_EVENT event;
+
+    timer = al_create_timer(1.0 / 30.0);
+    queue = al_create_event_queue();
+    disp = al_create_display(WIDTH, HEIGHT);
+
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));
     al_register_event_source(queue, al_get_timer_event_source(timer));
@@ -50,46 +53,46 @@ int main()
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////REGISTRAR IMGS////////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    ALLEGRO_BITMAP* sky = al_load_bitmap("sky.bmp");
-    ALLEGRO_BITMAP* dirt = al_load_bitmap("dirt.bmp");
-    ALLEGRO_BITMAP* platform = al_load_bitmap("platform.bmp");
-    ALLEGRO_BITMAP* perfil = al_load_bitmap("profile.bmp");
-    ALLEGRO_BITMAP* pwup = al_load_bitmap("power_up.bmp");
-    ALLEGRO_BITMAP* bar = al_load_bitmap("bar.bmp");
+    sky = al_load_bitmap("sky.bmp");
+    dirt = al_load_bitmap("dirt.bmp");
+    platform = al_load_bitmap("platform.bmp");
+    perfil = al_load_bitmap("profile.bmp");
+    pwup = al_load_bitmap("power_up.bmp");
+    bar = al_load_bitmap("bar.bmp");
 
-    ALLEGRO_BITMAP* jg0_Idle = al_load_bitmap("jg0_Idle_Walk.bmp");
-    ALLEGRO_BITMAP* jg0_Walk = al_load_bitmap("jg0_Idle_Walk.bmp");
-    ALLEGRO_BITMAP* jg0_Jump = al_load_bitmap("jg0_Jump.bmp");
-    ALLEGRO_BITMAP* jg0_Punch = al_load_bitmap("jg0_Punch.bmp");
-    ALLEGRO_BITMAP* jg0_Damage = al_load_bitmap("jg0_Damage.bmp");
+    jg0_Idle = al_load_bitmap("jg0_Idle_Walk.bmp");
+    jg0_Walk = al_load_bitmap("jg0_Idle_Walk.bmp");
+    jg0_Jump = al_load_bitmap("jg0_Jump.bmp");
+    jg0_Punch = al_load_bitmap("jg0_Punch.bmp");
+    jg0_Damage = al_load_bitmap("jg0_Damage.bmp");
 
-    ALLEGRO_BITMAP* jg1_Idle = al_load_bitmap("jg1_Idle_Walk.bmp");
-    ALLEGRO_BITMAP* jg1_Walk = al_load_bitmap("jg1_Idle_Walk.bmp");
-    ALLEGRO_BITMAP* jg1_Jump = al_load_bitmap("jg1_Jump.bmp");
-    ALLEGRO_BITMAP* jg1_Punch = al_load_bitmap("jg1_Punch.bmp");
-    ALLEGRO_BITMAP* jg1_Damage = al_load_bitmap("jg1_Damage.bmp");
+    jg1_Idle = al_load_bitmap("jg1_Idle_Walk.bmp");
+    jg1_Walk = al_load_bitmap("jg1_Idle_Walk.bmp");
+    jg1_Jump = al_load_bitmap("jg1_Jump.bmp");
+    jg1_Punch = al_load_bitmap("jg1_Punch.bmp");
+    jg1_Damage = al_load_bitmap("jg1_Damage.bmp");
     /*
        * fut, * bask, * tennis, * american, * cannon, * boss,  //Enemigos
        * llave_inglesa, * engranaje, * bateria;                //Puntos
     */
-    ALLEGRO_BITMAP* menu_principal = al_load_bitmap("menu_0.bmp");
-    //ALLEGRO_BITMAP* menu_principal = al_load_bitmap("menu_1.bmp");        CURSOR START
-    //ALLEGRO_BITMAP* menu_principal = al_load_bitmap("menu_2.bmp");        CURSOR RANKING
-    //ALLEGRO_BITMAP* menu_principal = al_load_bitmap("menu_3.bmp");        CURSOR EXIT
-    ALLEGRO_BITMAP* menu_ranking = al_load_bitmap("ranking.bmp");
-    //ALLEGRO_BITMAP* menu_history = al_load_bitmap("history.bmp");         
-    ALLEGRO_BITMAP* menu_instructions = al_load_bitmap("instructions0.bmp");
-    //ALLEGRO_BITMAP* menu_instructions = al_load_bitmap("instructions1.bmp");  CURSOR OK!
-    ALLEGRO_BITMAP* pause = al_load_bitmap("pause.bmp");                    //MANTENER RELACIÓN DE ASPECTO
+    menu_principal = al_load_bitmap("menu_0.bmp");
+    menu_principal1 = al_load_bitmap("menu_1.bmp");        //CURSOR START
+    menu_principal2 = al_load_bitmap("menu_2.bmp");        //CURSOR RANKING
+    menu_principal3 = al_load_bitmap("menu_3.bmp");        //CURSOR EXIT
+    menu_ranking = al_load_bitmap("ranking.bmp");
+    menu_history = al_load_bitmap("history.bmp");         
+    menu_instructions = al_load_bitmap("instructions0.bmp");
+    menu_instructions1 = al_load_bitmap("instructions1.bmp");  //CURSOR OK!
+    pause = al_load_bitmap("pause.bmp");                    //MANTENER RELACIÓN DE ASPECTO
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////INICIALIZAR JUGADOR///////////////////////////////////////
     _________________________________________________________________________________________________*/
-    for(i=0; i<FASES; i++)
+    for (i = 0; i < FASES; i++)
         VARIABLES_JUGADOR(jg[i], i);
     printf
     (
-        "posx=%d, posy=%d, salto=%d, gravity=%d, powerup=%d, colx=%d, coly=%d, vida=%f, lvlup=%f", 
-        jg[0].posx, jg[0].posy, jg[0].salto, jg[0].gravity, jg[0].powerup, jg[0].col_x, jg[0].col_y, 
+        "posx=%d, posy=%d, salto=%d, gravity=%d, powerup=%d, colx=%d, coly=%d, vida=%f, lvlup=%f",
+        jg[0].posx, jg[0].posy, jg[0].salto, jg[0].gravity, jg[0].powerup, jg[0].col_x, jg[0].col_y,
         jg[0].vida, jg[0].lvlup
     );
 
@@ -102,6 +105,10 @@ int main()
     al_start_timer(timer);
     while (!done)
     {
+        func_menu();
+        //->func_rank();
+        //->func_innstrucciones()
+        //etc...
         al_wait_for_event(queue, &event);
 
         switch (event.type)
@@ -148,14 +155,6 @@ int main()
         case ALLEGRO_EVENT_KEY_UP:
             key[event.keyboard.keycode] &= KEY_RELEASED;
             break;
-        case ALLEGRO_EVENT_MOUSE_AXES:
-            mouseX = event.mouse.x;
-            mouseY = event.mouse.y;
-        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-            if(event.mouse.button & 1)
-                //PlayerColor=ElectricBlue;
-            else if(event.mouse.button & 2)
-                //PlayerColor=Yellow;
         }
         if (!sky || !platform || !dirt || !pwup || !perfil || !bar)
         {
@@ -167,7 +166,7 @@ int main()
             //Aquí debería partir la colisión creo...
             al_clear_to_color(al_map_rgb(0, 0, 0));
             DRAW_MAP_SINCE_MAPA(mapa, sky, platform, dirt, pwup, perfil, bar);
-            
+
             if (jg[0].posy >= (HEIGHT - (PXL_H * 2)))                 //LIMITE INFERIOR, por ahora es sobre el pixel de suelo pues aun no hay colisiones implementadas.
                 jg[0].posy = HEIGHT - (PXL_H * 2);
 
@@ -179,24 +178,22 @@ int main()
     /*_______________________________________________________________________________________________
     /////////////////////////////////////////////FINALIZAR////////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    al_destroy_display(disp);
-    al_destroy_timer(timer);
-    al_destroy_event_queue(queue);
-    al_destroy_bitmap(sky);
-    al_destroy_bitmap(dirt);
-    al_destroy_bitmap(platform);
-    al_destroy_bitmap(bar);
-    al_destroy_bitmap(pwup);
-    al_destroy_bitmap(perfil);
-    al_destroy_bitmap(jg0_Idle);
-    al_destroy_bitmap(jg0_Walk);
-    al_destroy_bitmap(jg0_Jump);
-    al_destroy_bitmap(jg0_Damage);
-    al_destroy_bitmap(jg0_Punch);
-    al_destroy_bitmap(jg1_Idle);
-    al_destroy_bitmap(jg1_Walk);
-    al_destroy_bitmap(jg1_Jump);
-    al_destroy_bitmap(jg1_Damage);
-    al_destroy_bitmap(jg1_Punch);
+    exit_game();
     return 0;
+}
+
+void func_menu()
+{
+    while (!done)
+    {
+        switch (event.type)
+        {
+
+        }
+        if (al_is_event_queue_empty(queue) && (!done))
+        {
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+            al_flip_display();
+        }
+    }
 }

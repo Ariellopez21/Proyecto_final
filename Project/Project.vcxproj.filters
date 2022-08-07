@@ -23,13 +23,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="declaraciones-estructuras.h">
+    <ClInclude Include="estructuras_funciones.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="archivos.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="dibujado.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="variables_globales.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
@@ -97,6 +100,21 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="pause.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="menu_1.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="menu_2.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="menu_3.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="instructions1.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="history.bmp">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>

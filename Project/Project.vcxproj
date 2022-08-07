@@ -148,8 +148,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="archivos.h" />
-    <ClInclude Include="declaraciones-estructuras.h" />
+    <ClInclude Include="estructuras_funciones.h" />
     <ClInclude Include="dibujado.h" />
+    <ClInclude Include="variables_globales.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Mapa_inicial.txt" />
@@ -159,6 +160,7 @@
     <Image Include="bar.bmp" />
     <Image Include="dirt.bmp" />
     <Image Include="instructions0.bmp" />
+    <Image Include="instructions1.bmp" />
     <Image Include="jg0_Damage.bmp" />
     <Image Include="jg0_Jump.bmp" />
     <Image Include="jg0_momentaneo.bmp" />
@@ -169,6 +171,10 @@
     <Image Include="jg1_Jump.bmp" />
     <Image Include="jg1_Punch.bmp" />
     <Image Include="menu_0.bmp" />
+    <Image Include="menu_1.bmp" />
+    <Image Include="menu_2.bmp" />
+    <Image Include="menu_3.bmp" />
+    <Image Include="history.bmp" />
     <Image Include="platform.bmp" />
     <Image Include="power_up.bmp" />
     <Image Include="profile.bmp" />
