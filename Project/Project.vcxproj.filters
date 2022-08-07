@@ -87,5 +87,17 @@
     <Image Include="jg1_Punch.bmp">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="menu_0.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="ranking.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="instructions0.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="pause.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
 </Project>

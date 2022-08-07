@@ -7,8 +7,7 @@ void DRAW_MAP_SINCE_MAPA
     ALLEGRO_BITMAP* dirt,
     ALLEGRO_BITMAP* power_up,
     ALLEGRO_BITMAP* profile,
-    ALLEGRO_BITMAP* bar,
-    ALLEGRO_BITMAP* jg_bitmap
+    ALLEGRO_BITMAP* bar
 )
 {
     int i, j;
@@ -35,7 +34,7 @@ void DRAW_MAP_SINCE_MAPA
             if (dibujado[i][j] == 'U')
             {
                 al_draw_bitmap(power_up, j * PXL_W, i * PXL_H, 0);
-                al_convert_mask_to_alpha(jg_bitmap, al_map_rgb(120, 8, 249));
+                al_convert_mask_to_alpha(power_up, al_map_rgb(120, 8, 249));
             }
             if (dibujado[i][j] == 'B')
             {

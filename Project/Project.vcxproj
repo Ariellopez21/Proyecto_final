@@ -158,6 +158,7 @@
   <ItemGroup>
     <Image Include="bar.bmp" />
     <Image Include="dirt.bmp" />
+    <Image Include="instructions0.bmp" />
     <Image Include="jg0_Damage.bmp" />
     <Image Include="jg0_Jump.bmp" />
     <Image Include="jg0_momentaneo.bmp" />
@@ -167,9 +168,12 @@
     <Image Include="jg1_Idle_Walk.bmp" />
     <Image Include="jg1_Jump.bmp" />
     <Image Include="jg1_Punch.bmp" />
+    <Image Include="menu_0.bmp" />
     <Image Include="platform.bmp" />
     <Image Include="power_up.bmp" />
     <Image Include="profile.bmp" />
+    <Image Include="pause.bmp" />
+    <Image Include="ranking.bmp" />
     <Image Include="sky.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -18,6 +18,7 @@ int main()
     ///////////////////////////////////////DECLARAR VARIABLES////////////////////////////////////////
     _________________________________________________________________________________________________*/
     int x = 0, y = 0, i = 0, j = 0, k = 0, tipo = 1;
+    int mouseX = 10, mouseY = 10, MouseSpeed = 5;
     char mapa[SIZE][SIZE];
     bool done = false;
     unsigned char key[ALLEGRO_KEY_MAX];
@@ -35,13 +36,17 @@ int main()
     al_init_primitives_addon();
     al_init_font_addon();
     al_install_keyboard();
+    al_install_mouse();
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 30.0);
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
     ALLEGRO_DISPLAY* disp = al_create_display(WIDTH, HEIGHT);
+    al_set_window_position(disp, 800, 100);
+    al_set_window_title(disp, "Planeta Gol!");
     ALLEGRO_EVENT event;
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));
     al_register_event_source(queue, al_get_timer_event_source(timer));
+    al_register_event_source(queue, al_get_mouse_event_source());
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////REGISTRAR IMGS////////////////////////////////////////////
     _________________________________________________________________________________________________*/
@@ -67,6 +72,15 @@ int main()
        * fut, * bask, * tennis, * american, * cannon, * boss,  //Enemigos
        * llave_inglesa, * engranaje, * bateria;                //Puntos
     */
+    ALLEGRO_BITMAP* menu_principal = al_load_bitmap("menu_0.bmp");
+    //ALLEGRO_BITMAP* menu_principal = al_load_bitmap("menu_1.bmp");        CURSOR START
+    //ALLEGRO_BITMAP* menu_principal = al_load_bitmap("menu_2.bmp");        CURSOR RANKING
+    //ALLEGRO_BITMAP* menu_principal = al_load_bitmap("menu_3.bmp");        CURSOR EXIT
+    ALLEGRO_BITMAP* menu_ranking = al_load_bitmap("ranking.bmp");
+    //ALLEGRO_BITMAP* menu_history = al_load_bitmap("history.bmp");         
+    ALLEGRO_BITMAP* menu_instructions = al_load_bitmap("instructions0.bmp");
+    //ALLEGRO_BITMAP* menu_instructions = al_load_bitmap("instructions1.bmp");  CURSOR OK!
+    ALLEGRO_BITMAP* pause = al_load_bitmap("pause.bmp");                    //MANTENER RELACIÓN DE ASPECTO
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////INICIALIZAR JUGADOR///////////////////////////////////////
     _________________________________________________________________________________________________*/
@@ -134,8 +148,16 @@ int main()
         case ALLEGRO_EVENT_KEY_UP:
             key[event.keyboard.keycode] &= KEY_RELEASED;
             break;
+        case ALLEGRO_EVENT_MOUSE_AXES:
+            mouseX = event.mouse.x;
+            mouseY = event.mouse.y;
+        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+            if(event.mouse.button & 1)
+                //PlayerColor=ElectricBlue;
+            else if(event.mouse.button & 2)
+                //PlayerColor=Yellow;
         }
-        if (!sky || !platform || !dirt || !pwup || !perfil || !bar || !jg0_Idle)
+        if (!sky || !platform || !dirt || !pwup || !perfil || !bar)
         {
             printf("NO SE CARGÓ");
             return 0;
@@ -144,7 +166,7 @@ int main()
         {
             //Aquí debería partir la colisión creo...
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            DRAW_MAP_SINCE_MAPA(mapa, sky, platform, dirt, pwup, perfil, bar, jg0_Idle);
+            DRAW_MAP_SINCE_MAPA(mapa, sky, platform, dirt, pwup, perfil, bar);
             
             if (jg[0].posy >= (HEIGHT - (PXL_H * 2)))                 //LIMITE INFERIOR, por ahora es sobre el pixel de suelo pues aun no hay colisiones implementadas.
                 jg[0].posy = HEIGHT - (PXL_H * 2);
