@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
@@ -14,7 +15,6 @@
 #include "archivos.h"
 #include "dibujado.h"
 #include "funciones_menu.h"
-
 int main()
 {
     /*_______________________________________________________________________________________________
@@ -26,6 +26,12 @@ int main()
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
     bool flag_key_up_true = false;
+    bool coll_left = false;
+    bool coll_right = false;
+    bool coll_up = false;
+    bool coll_down = false;
+    bool press_button_up = false;
+    bool anime = true;
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////INICIAR ARCHIVO///////////////////////////////////////////
     _________________________________________________________________________________________________*/
@@ -103,42 +109,125 @@ int main()
     /*________________________________________________________________________________________________
     /////////////////////////////////////////INICIA EL JUEGO//////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    done = func_menu();
-    func_instructions();
+    //done = func_menu();
+    //func_instructions();
     al_start_timer(timer);
     while (!done)
     {
         al_wait_for_event(queue, &event);
+
         switch (event.type)
         {
-        case ALLEGRO_EVENT_TIMER:                                       //MOV. JUGADOR
-            if (key[ALLEGRO_KEY_UP] && !flag_key_up_true)
+        case ALLEGRO_EVENT_TIMER:  
+            //COLISION IZQ
+            if (
+                (mapa[jg[0].posy / PXL_H][(jg[0].posx - 1) / PXL_W] == 'p' ||
+                    mapa[jg[0].posy / PXL_H][(jg[0].posx - 1) / PXL_W] == 'D')
+                &&
+                (mapa[(jg[0].posy + (PXL_H / 2)) / PXL_H][(jg[0].posx - 1) / PXL_W] == 'p' ||
+                    mapa[(jg[0].posy + (PXL_H / 2)) / PXL_H][(jg[0].posx - 1) / PXL_W] == 'D')
+                &&
+                (mapa[(jg[0].posy + PXL_H) / PXL_H][(jg[0].posx - 1) / PXL_W] == 'p' ||
+                    mapa[(jg[0].posy + PXL_H) / PXL_H][(jg[0].posx - 1) / PXL_W] == 'D')
+                )
+                coll_left = true;
+            else
+                coll_left = false;
+
+            //COLISION DER
+            if (
+                (mapa[jg[0].posy / PXL_H][(jg[0].posx + SIZE+5) / PXL_W] == 'p' ||
+                    mapa[jg[0].posy / PXL_H][(jg[0].posx + SIZE+5) / PXL_W] == 'D')
+                &&
+                (mapa[(jg[0].posy + (PXL_H / 2)) / PXL_H][(jg[0].posx + SIZE+5) / PXL_W] == 'p' ||
+                    mapa[(jg[0].posy + (PXL_H / 2)) / PXL_H][(jg[0].posx + SIZE+5) / PXL_W] == 'D')
+                &&
+                (mapa[(jg[0].posy + PXL_H) / PXL_H][(jg[0].posx + SIZE+5) / PXL_W] == 'p' ||
+                    mapa[(jg[0].posy + PXL_H) / PXL_H][(jg[0].posx + SIZE+5) / PXL_W] == 'D')
+                )
+                coll_right = true;
+            else
+                coll_right = false;
+
+            //COLISION ARRIBA
+            if (
+                (mapa[jg[0].posy / PXL_H][jg[0].posx / PXL_W] == 'p')
+                ||
+                (mapa[jg[0].posy / PXL_H][(jg[0].posx + (SIZE / 2)) / PXL_W] == 'p')
+                ||
+                (mapa[jg[0].posy / PXL_H][(jg[0].posx + SIZE) / PXL_W] == 'p')
+                )
+                coll_up = true;
+            else
+                coll_up = false;
+
+            //COLISION ABAJO
+            if (
+                (mapa[(jg[0].posy + PXL_H) / PXL_H][jg[0].posx / PXL_W] == 'p')
+                ||
+                (mapa[(jg[0].posy + PXL_H) / PXL_H][(jg[0].posx + (SIZE / 2)) / PXL_W] == 'p')
+                ||
+                (mapa[(jg[0].posy + PXL_H) / PXL_H][(jg[0].posx + SIZE) / PXL_W] == 'p')
+                )
+                coll_down = true;
+            else
+                coll_down = false;
+
+            if (coll_down)
+                jg[0].gravity = 0;
+            else
+                jg[0].gravity = VALOR_GRAVITY;
+
+            if(!coll_up)
             {
-                jg[0].posy = jg[0].posy - jg[0].salto;
-                if (jg[0].salto > 0)
-                    jg[0].salto--;
+                if (key[ALLEGRO_KEY_UP] && !flag_key_up_true)
+                {
+                        jg[0].posy = jg[0].posy - jg[0].salto;
+                        if (jg[0].salto > 0)
+                            jg[0].salto--;
+                        else
+                        {
+                            flag_key_up_true = true;
+                            jg[0].salto = 0;
+                        }
+                }
                 else
-                    flag_key_up_true = true;
+                {
+                    jg[0].posy = jg[0].posy + jg[0].gravity;
+                    if ((mapa[(jg[0].posy + PXL_H) / PXL_H][jg[0].posx / PXL_W] == 'p') ||
+                        (mapa[(jg[0].posy + PXL_H) / PXL_H][jg[0].posx / PXL_W] == 'D'))
+                    {
+                        jg[0].salto = VALOR_INIT_SALTO;
+                        flag_key_up_true = false;
+                    }
+                }
             }
             else
             {
-                jg[0].salto = VALOR_INIT_SALTO;
+                jg[0].salto = 0;
                 jg[0].posy = jg[0].posy + jg[0].gravity;
-                //if(colision entre plataforma y personaje). Actualmente la condición no existe, pero es porque necesito colisión!
-                flag_key_up_true = false;
             }
-            if (key[ALLEGRO_KEY_LEFT])
+
+            if (!coll_left)
             {
-                jg[0].posx = jg[0].posx - 13;
-                if (jg[0].posx <= (0 - PXL_W))
-                    jg[0].posx = WIDTH;
+                if(key[ALLEGRO_KEY_LEFT])
+                {
+                    jg[0].posx = jg[0].posx - jg[0].velx;
+                    if (jg[0].posx <= 0)
+                        jg[0].posx = WIDTH - PXL_W;
+                }
             }
-            if (key[ALLEGRO_KEY_RIGHT])
+
+            if (!coll_right)
             {
-                jg[0].posx = jg[0].posx + 13;
-                if (jg[0].posx >= WIDTH)
-                    jg[0].posx = 0 - PXL_W;
+                if(key[ALLEGRO_KEY_RIGHT])
+                {
+                    jg[0].posx = jg[0].posx + jg[0].velx;
+                    if (jg[0].posx >= WIDTH)
+                        jg[0].posx = 0;
+                }
             }
+
             if (key[ALLEGRO_KEY_ESCAPE])
                 done = true;
             for (int i = 0; i < ALLEGRO_KEY_MAX; i++)
@@ -169,7 +258,9 @@ int main()
                 jg[0].posy = HEIGHT - (PXL_H * 2);
 
             al_draw_bitmap_region(jg0_Idle, 0, 0, PXL_W, PXL_H, jg[0].posx, jg[0].posy, 0);
-            al_convert_mask_to_alpha(jg0_Idle, al_map_rgb(107, 41, 115));
+            al_draw_bitmap_region(jg0_Idle, PXL_W+1, 0, PXL_W*2, PXL_H, jg[0].posx, jg[0].posy, 0);
+            al_draw_bitmap_region(jg0_Idle, (PXL_W*2)+1, 0, PXL_W*3, PXL_H, jg[0].posx, jg[0].posy, 0);
+            al_convert_mask_to_alpha(jg0_Idle, al_map_rgba(255, 0, 0,255));
             al_flip_display();
         }
     }

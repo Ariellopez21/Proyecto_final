@@ -1,17 +1,20 @@
 #pragma once
-#define FASES 3
-#define WIDTH 600
-#define HEIGHT  800
-#define SIZE 20
-#define PXL_W 30
-#define PXL_H 40
-#define KEY_SEEN     1
-#define KEY_RELEASED 2
+//TAMAÑOS:
+#define WIDTH 600				//WINDOW
+#define HEIGHT  800				//WINDOW
+#define SIZE 20					//ARCHIVO
+#define PXL_W 30				//PIXEL
+#define PXL_H 40				//PIXEL
+#define PXL_CENTROW (PXL_W/2)	//CENTRO PIXEL
+#define PXL_CENTROH (PXL_H/2)	//CENTRO PIXEL
+
+#define KEY_SEEN     1			//MEMORIA KEY
+#define KEY_RELEASED 2			//MEMORIA KEY
+
 #define VALOR_INIT_SALTO 17
 #define VALOR_GRAVITY 22
-#define VALOR_VEL_JG 6
-#define TAM_PLATFORM 42
-#define TAM_DIRT 20
+#define VEL_X0 12
+#define FASES 3
 ALLEGRO_EVENT_QUEUE* queue;
 ALLEGRO_TIMER* timer;
 ALLEGRO_DISPLAY* disp;

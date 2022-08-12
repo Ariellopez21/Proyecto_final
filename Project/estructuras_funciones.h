@@ -13,6 +13,7 @@ struct player_
 {
     int posx;
     int posy;
+    int velx;
     int salto;                  //viene siendo el aumento de pos_y hacia arriba
     int gravity;
     float vida;
@@ -21,6 +22,7 @@ struct player_
     int col_x;
     int col_y;
 }jg[FASES];
+
 void VARIABLES_JUGADOR(player_& jg, int fase);
 void VARIABLES_JUGADOR(player_ &jg, int fase)
 {
@@ -28,7 +30,8 @@ void VARIABLES_JUGADOR(player_ &jg, int fase)
     {
         jg.posx = WIDTH / 2;
         jg.posy = HEIGHT - (PXL_H * 2);
-        jg.salto = VALOR_INIT_SALTO;
+        jg.velx = VEL_X0;
+        jg.salto = 0;
         jg.gravity = VALOR_GRAVITY;
         jg.vida = 100;
         jg.lvlup = 0;
@@ -45,6 +48,7 @@ void VARIABLES_JUGADOR(player_ &jg, int fase)
 
     }
 }
+
 void exit_game();
 void exit_game()
 {

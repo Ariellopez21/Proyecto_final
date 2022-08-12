@@ -13,6 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Archivos de recursos\BackGround">
+      <UniqueIdentifier>{74091035-829f-40d8-802e-db493ad366a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de recursos\Menu">
+      <UniqueIdentifier>{d7c85780-101c-4410-b914-dc3797939f88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de recursos\Sprites">
+      <UniqueIdentifier>{60dacd0c-4831-48bb-9a25-cdbc2e9b7167}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de recursos\Mapas">
+      <UniqueIdentifier>{152163c1-7e27-4b9e-9ec1-81a8b0613574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de recursos\In_game">
+      <UniqueIdentifier>{ed63d00b-dc01-4bd0-9a3e-61ea9163ba82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -41,84 +56,84 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Mapa_inicial.txt">
-      <Filter>Archivos de recursos</Filter>
+      <Filter>Archivos de recursos\Mapas</Filter>
     </Text>
     <Text Include="Mapa_jefe.txt">
-      <Filter>Archivos de recursos</Filter>
+      <Filter>Archivos de recursos\Mapas</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="sky.bmp">
-      <Filter>Archivos de recursos</Filter>
+    <Image Include="bar.bmp">
+      <Filter>Archivos de recursos\BackGround</Filter>
     </Image>
     <Image Include="dirt.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="bar.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="platform.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="profile.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="power_up.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="jg0_momentaneo.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="jg0_Idle_Walk.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="jg0_Punch.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="jg0_Jump.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="jg0_Damage.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="jg1_Idle_Walk.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="jg1_Damage.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="jg1_Jump.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="jg1_Punch.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="menu_0.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="ranking.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="instructions0.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="pause.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="menu_1.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="menu_2.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="menu_3.bmp">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="instructions1.bmp">
-      <Filter>Archivos de recursos</Filter>
+      <Filter>Archivos de recursos\BackGround</Filter>
     </Image>
     <Image Include="history.bmp">
-      <Filter>Archivos de recursos</Filter>
+      <Filter>Archivos de recursos\Menu</Filter>
+    </Image>
+    <Image Include="instructions0.bmp">
+      <Filter>Archivos de recursos\Menu</Filter>
+    </Image>
+    <Image Include="instructions1.bmp">
+      <Filter>Archivos de recursos\Menu</Filter>
+    </Image>
+    <Image Include="jg0_Damage.bmp">
+      <Filter>Archivos de recursos\Sprites</Filter>
+    </Image>
+    <Image Include="jg0_Idle_Walk.bmp">
+      <Filter>Archivos de recursos\Sprites</Filter>
+    </Image>
+    <Image Include="jg0_Jump.bmp">
+      <Filter>Archivos de recursos\Sprites</Filter>
+    </Image>
+    <Image Include="jg0_momentaneo.bmp">
+      <Filter>Archivos de recursos\Sprites</Filter>
+    </Image>
+    <Image Include="jg0_Punch.bmp">
+      <Filter>Archivos de recursos\Sprites</Filter>
+    </Image>
+    <Image Include="jg1_Damage.bmp">
+      <Filter>Archivos de recursos\Sprites</Filter>
+    </Image>
+    <Image Include="jg1_Idle_Walk.bmp">
+      <Filter>Archivos de recursos\Sprites</Filter>
+    </Image>
+    <Image Include="jg1_Jump.bmp">
+      <Filter>Archivos de recursos\Sprites</Filter>
+    </Image>
+    <Image Include="jg1_Punch.bmp">
+      <Filter>Archivos de recursos\Sprites</Filter>
+    </Image>
+    <Image Include="menu_0.bmp">
+      <Filter>Archivos de recursos\Menu</Filter>
+    </Image>
+    <Image Include="menu_1.bmp">
+      <Filter>Archivos de recursos\Menu</Filter>
+    </Image>
+    <Image Include="menu_2.bmp">
+      <Filter>Archivos de recursos\Menu</Filter>
+    </Image>
+    <Image Include="menu_3.bmp">
+      <Filter>Archivos de recursos\Menu</Filter>
+    </Image>
+    <Image Include="platform.bmp">
+      <Filter>Archivos de recursos\BackGround</Filter>
+    </Image>
+    <Image Include="power_up.bmp">
+      <Filter>Archivos de recursos\BackGround</Filter>
+    </Image>
+    <Image Include="profile.bmp">
+      <Filter>Archivos de recursos\BackGround</Filter>
+    </Image>
+    <Image Include="sky.bmp">
+      <Filter>Archivos de recursos\BackGround</Filter>
+    </Image>
+    <Image Include="pause.bmp">
+      <Filter>Archivos de recursos\In_game</Filter>
+    </Image>
+    <Image Include="ranking.bmp">
+      <Filter>Archivos de recursos\Menu</Filter>
     </Image>
   </ItemGroup>
 </Project>
