@@ -1,14 +1,16 @@
 #pragma once
-struct blocks_
+enum animacion
 {
-    int x;
-    int y;
-    int w;
-    int h;
-    int col_true;
+    ann_quiet = 0, ann_up = 1, ann_right = 2, ann_left = 3, ann_punch = 4
 };
-typedef struct blocks_ block;
+enum pos_enemy
+{
+    F1x = 288,
+    F1y = 200,
+    F2x=264,
+    F2y=482,
 
+};
 struct player_
 {
     int posx;
@@ -23,7 +25,24 @@ struct player_
     int col_y;
 }jg[FASES];
 
+struct enemy_
+{
+    int posx;
+    int posy;
+    int velx;
+    int vely;
+    int wall;
+    int live;
+    int draw;
+    int dmg;
+    int dir;
+    int gen;
+}futbol[1], basket[1], tennis[1], american[1], cannon[1];
+
 void VARIABLES_JUGADOR(player_& jg, int fase);
+void VARIABLES_ENEMIGOS(enemy_& en);
+void exit_game();
+
 void VARIABLES_JUGADOR(player_ &jg, int fase)
 {
     if (fase == 0)
@@ -49,7 +68,20 @@ void VARIABLES_JUGADOR(player_ &jg, int fase)
     }
 }
 
-void exit_game();
+void VARIABLES_ENEMIGOS(enemy_& en)
+{
+    en.posx = 0;
+    en.posy = 0;
+    en.velx = 0;
+    en.vely = 0;
+    en.wall = 0;
+    en.live = 0;
+    en.draw = 0;
+    en.dmg = 0;
+    en.dir = 0;
+    en.gen = 0;
+}
+
 void exit_game()
 {
     al_destroy_display(disp);

@@ -38,102 +38,119 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="estructuras_funciones.h">
+    <ClInclude Include="Encabezados\archivos.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="archivos.h">
+    <ClInclude Include="Encabezados\dibujado.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="dibujado.h">
+    <ClInclude Include="Encabezados\estructuras_funciones.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="variables_globales.h">
+    <ClInclude Include="Encabezados\funciones_menu.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="funciones_menu.h">
+    <ClInclude Include="Encabezados\variables_globales.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Mapa_inicial.txt">
-      <Filter>Archivos de recursos\Mapas</Filter>
-    </Text>
-    <Text Include="Mapa_jefe.txt">
-      <Filter>Archivos de recursos\Mapas</Filter>
-    </Text>
+    <Text Include="Archivos\Mapa_jefe.txt" />
+    <Text Include="Archivos\Mapa_inicial.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="bar.bmp">
-      <Filter>Archivos de recursos\BackGround</Filter>
+    <Image Include="Screen\history.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="dirt.bmp">
-      <Filter>Archivos de recursos\BackGround</Filter>
+    <Image Include="Screen\instructions0.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="history.bmp">
-      <Filter>Archivos de recursos\Menu</Filter>
+    <Image Include="Screen\instructions1.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="instructions0.bmp">
-      <Filter>Archivos de recursos\Menu</Filter>
+    <Image Include="Screen\menu_0.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="instructions1.bmp">
-      <Filter>Archivos de recursos\Menu</Filter>
+    <Image Include="Screen\menu_1.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="jg0_Damage.bmp">
-      <Filter>Archivos de recursos\Sprites</Filter>
+    <Image Include="Screen\menu_2.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="jg0_Idle_Walk.bmp">
-      <Filter>Archivos de recursos\Sprites</Filter>
+    <Image Include="Screen\menu_3.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="jg0_Jump.bmp">
-      <Filter>Archivos de recursos\Sprites</Filter>
+    <Image Include="Screen\pause.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="jg0_momentaneo.bmp">
-      <Filter>Archivos de recursos\Sprites</Filter>
+    <Image Include="Screen\ranking.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="jg0_Punch.bmp">
-      <Filter>Archivos de recursos\Sprites</Filter>
+    <Image Include="Sprites\Escenario\bar.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="jg1_Damage.bmp">
-      <Filter>Archivos de recursos\Sprites</Filter>
+    <Image Include="Sprites\Escenario\dirt.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="jg1_Idle_Walk.bmp">
-      <Filter>Archivos de recursos\Sprites</Filter>
+    <Image Include="Sprites\Escenario\platform.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="jg1_Jump.bmp">
-      <Filter>Archivos de recursos\Sprites</Filter>
+    <Image Include="Sprites\Escenario\power_up.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="jg1_Punch.bmp">
-      <Filter>Archivos de recursos\Sprites</Filter>
+    <Image Include="Sprites\Escenario\profile.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="menu_0.bmp">
-      <Filter>Archivos de recursos\Menu</Filter>
+    <Image Include="Sprites\Escenario\sky.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="menu_1.bmp">
-      <Filter>Archivos de recursos\Menu</Filter>
+    <Image Include="Sprites\Jugador\jg0_Damage.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="menu_2.bmp">
-      <Filter>Archivos de recursos\Menu</Filter>
+    <Image Include="Sprites\Jugador\jg0_Idle_Walk.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="menu_3.bmp">
-      <Filter>Archivos de recursos\Menu</Filter>
+    <Image Include="Sprites\Jugador\jg0_Jump.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="platform.bmp">
-      <Filter>Archivos de recursos\BackGround</Filter>
+    <Image Include="Sprites\Jugador\jg0_Punch.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="power_up.bmp">
-      <Filter>Archivos de recursos\BackGround</Filter>
+    <Image Include="Sprites\Jugador\jg1_Damage.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="profile.bmp">
-      <Filter>Archivos de recursos\BackGround</Filter>
+    <Image Include="Sprites\Jugador\jg1_Idle_Walk.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="sky.bmp">
-      <Filter>Archivos de recursos\BackGround</Filter>
+    <Image Include="Sprites\Jugador\jg1_Jump.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="pause.bmp">
-      <Filter>Archivos de recursos\In_game</Filter>
+    <Image Include="Sprites\Jugador\jg1_Punch.bmp">
+      <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="ranking.bmp">
-      <Filter>Archivos de recursos\Menu</Filter>
+    <Image Include="Sprites\Enemigos\basket.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Sprites\Enemigos\basketgif.gif">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Sprites\Enemigos\futbol.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Sprites\Enemigos\futbolgif.gif">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Sprites\Enemigos\tennis.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Screen\pause_1.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Screen\pause_0.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Screen\pause_2.png">
+      <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>
 </Project>

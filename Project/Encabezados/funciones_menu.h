@@ -2,6 +2,8 @@
 bool func_menu();
 bool func_rank();
 void func_instructions();
+bool func_pause(bool pausa);
+
 bool func_menu()
 {
     int mouseX = 10, mouseY = 10;
@@ -141,4 +143,69 @@ void func_instructions()
         }
     }
     return;
+}
+
+bool func_pause(bool pausa)
+{
+    int mouseX = 10, mouseY = 10;
+    bool click[] = {0, 0, 0};
+    click[0] = true;
+    pausa = true;
+    al_install_mouse();
+    al_start_timer(timer);
+    while (pausa)
+    {
+        al_wait_for_event(queue, &event);
+        switch (event.type)
+        {
+        case ALLEGRO_EVENT_DISPLAY_CLOSE:
+        {            
+            done = true;
+            pausa = false;
+        }
+
+            break;
+        case ALLEGRO_EVENT_MOUSE_AXES:
+            mouseX = event.mouse.x;
+            mouseY = event.mouse.y;
+            if (mouseX >= (94 + 150) && (mouseX <= 202 + 150) && mouseY >= (80 + 300) && (mouseY <= 116 + 300))    //CONTINUE
+                click[1] = true;                 //USAR BITMAP PAUSE1                 
+            else
+                click[1] = false;
+            if (mouseX >= (95 + 150) && (mouseX <= 201 + 150) && mouseY >= (124 + 300) && (mouseY <= 160 + 300))    //EXIT
+                click[2] = true;                 //USAR BITMAP PAUSE2                 
+            else
+                click[2] = false;
+            if (!click[1] && !click[2])
+                click[0] = true;
+            else
+                click[0] = false;
+            break;
+        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+            if (mouseX >= (94 + 150) && (mouseX <= 202 + 150) && mouseY >= (80 + 300) && (mouseY <= 116 + 300))                     //CONTINUE
+                if (event.mouse.button & 1)     //CONTINUE
+                {
+                    pausa = false;
+                    done = false;
+                }
+            if (mouseX >= (95 + 150) && (mouseX <= 201 + 150) && mouseY >= (124 + 300) && (mouseY <= 160 + 300))                    //EXIT
+                if (event.mouse.button & 1)     //EXIT
+                {
+                    pausa = false;
+                    done = true;
+                }
+            break;
+        }
+        if (al_is_event_queue_empty(queue) && (!done))
+        {
+            if (click[0])
+                al_draw_bitmap(pause, 150, 300, 0);
+            else if (click[1])
+                al_draw_bitmap(pause1, 150, 300, 0);
+            else if (click[2])
+                al_draw_bitmap(pause2, 150, 300, 0);
+            al_flip_display();
+        }
+    }
+    return done;
 }
