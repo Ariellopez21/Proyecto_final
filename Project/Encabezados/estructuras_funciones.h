@@ -11,6 +11,7 @@ enum pos_enemy
     F2y=482,
 
 };
+
 struct player_
 {
     int posx;
@@ -31,11 +32,10 @@ struct enemy_
     int posy;
     int velx;
     int vely;
-    int wall;
-    int live;
-    int draw;
+    bool wall;
+    bool live;
     int dmg;
-    int dir;
+    bool dir;
     int gen;
 }futbol[1], basket[1], tennis[1], american[1], cannon[1];
 
@@ -68,18 +68,17 @@ void VARIABLES_JUGADOR(player_ &jg, int fase)
     }
 }
 
-void VARIABLES_ENEMIGOS(enemy_& en)
+void VARIABLES_ENEMIGOS(enemy_ &en)
 {
-    en.posx = 0;
-    en.posy = 0;
-    en.velx = 0;
+    en.posx = 450;
+    en.posy = 620;
+    en.velx = 10;
     en.vely = 0;
-    en.wall = 0;
-    en.live = 0;
-    en.draw = 0;
-    en.dmg = 0;
-    en.dir = 0;
-    en.gen = 0;
+    en.wall = false;
+    en.live = true;
+    en.dmg = 1;     //-1 por contacto
+    en.dir = true;  //derecha
+    en.gen = 0;     //cannon->basket...
 }
 
 void exit_game()

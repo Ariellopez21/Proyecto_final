@@ -10,7 +10,12 @@
 #include "Encabezados/estructuras_funciones.h"
 #include "Encabezados/dibujado.h"
 #include "Encabezados/funciones_menu.h"
-bool colision(char mapa[SIZE][SIZE], player_& jg);
+bool coll_izq(char mapa[SIZE][SIZE], player_& jg, bool coll_left);
+bool coll_der(char mapa[SIZE][SIZE], player_& jg, bool coll_right);
+bool coll_up(char mapa[SIZE][SIZE], player_& jg, bool coll_up);
+bool coll_down(char mapa[SIZE][SIZE], player_& jg, bool coll_down);
+
+void mov_futbol(int x, int vel, bool dir);
 int main()
 {
     /*_______________________________________________________________________________________________
@@ -68,8 +73,8 @@ int main()
     jg1_Punch = al_load_bitmap("Sprites/Jugador/jg1_Punch.bmp");
     jg1_Damage = al_load_bitmap("Sprites/Jugador/jg1_Damage.bmp");
 
-    futbol_img = al_load_bitmap("Sprites/Enemigos/futbolgif.gif");
-    basket_img = al_load_bitmap("Sprites/Enemigos/basketgif.gif");
+    futbol_img = al_load_bitmap("Sprites/Enemigos/futbol.png");
+    basket_img = al_load_bitmap("Sprites/Enemigos/basketpng.png");
     tennis_img = al_load_bitmap("Sprites/Enemigos/tennis.png");
     /*
        * american, * cannon, * boss,                           //Enemigos
@@ -102,17 +107,17 @@ int main()
     ////////////////////////////////////INICIALIZAR ENEMIGOS/////////////////////////////////////////
     _________________________________________________________________________________________________*/
     srand(time(0));
-    futbol[0].posx;
+    VARIABLES_ENEMIGOS(futbol[0]);
     /*________________________________________________________________________________________________
     /////////////////////////////////////////INICIA EL JUEGO//////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    done = func_menu();
-    func_instructions();
+    //done = func_menu();
+    //func_instructions();
     al_start_timer(timer);
     while (!done)
     {
-
         al_wait_for_event(queue, &event);
+        mov_futbol(futbol[0].posx, futbol[0].velx, futbol[0].dir);
         switch (event.type)
         {
         case ALLEGRO_EVENT_TIMER:
@@ -275,18 +280,16 @@ int main()
 
             al_draw_bitmap_region(jg0_Idle, 0, 0, PXL_W, PXL_H, jg[0].posx, jg[0].posy, 0);
             al_convert_mask_to_alpha(jg0_Idle, al_map_rgba(255, 0, 0, 255));
-            //al_draw_bitmap_region(futbol_img, 0, 0, PXL_W, PXL_H, futbol.posx, futbol.posy, 0);
-            //al_convert_mask_to_alpha(futbol_img, al_map_rgba(255, 0, 0, 255));
+            al_draw_bitmap_region(futbol_img, 0, 0, PXL_W, PXL_H, futbol[0].posx, futbol[0].posy, 0);
+            al_convert_mask_to_alpha(futbol_img, al_map_rgba(255, 0, 0, 255));
             al_flip_display();
         }
     }
     exit_game();
     return 0;
 }
-bool colision(char mapa[SIZE][SIZE], player_& jg)
+bool coll_izq(char mapa[SIZE][SIZE], player_& jg, bool coll_left)
 {
-    bool coll_left = false, coll_right = false, coll_up = false, coll_down = false;
-    //COLISION IZQ
     if (
         (mapa[jg.posy / PXL_H][(jg.posx - 1) / PXL_W] == 'p' ||
             mapa[jg.posy / PXL_H][(jg.posx - 1) / PXL_W] == 'D')
@@ -300,8 +303,9 @@ bool colision(char mapa[SIZE][SIZE], player_& jg)
         return (coll_left=true);
     else
         return (coll_left = false);
-
-    //COLISION DER
+}
+bool coll_der(char mapa[SIZE][SIZE], player_& jg, bool coll_right)
+{
     if (
         (mapa[jg.posy / PXL_H][(jg.posx + SIZE + 5) / PXL_W] == 'p' ||
             mapa[jg.posy / PXL_H][(jg.posx + SIZE + 5) / PXL_W] == 'D')
@@ -315,8 +319,9 @@ bool colision(char mapa[SIZE][SIZE], player_& jg)
         return (coll_right = true);
     else
         return (coll_right = false);
-
-    //COLISION ARRIBA
+}
+bool coll_up(char mapa[SIZE][SIZE], player_& jg, bool coll_up)
+{
     if (
         (mapa[jg.posy / PXL_H][jg.posx / PXL_W] == 'p')
         ||
@@ -327,8 +332,9 @@ bool colision(char mapa[SIZE][SIZE], player_& jg)
         return (coll_up = true);
     else
         return (coll_up = false);
-
-    //COLISION ABAJO
+}
+bool coll_down(char mapa[SIZE][SIZE], player_& jg, bool coll_down)
+{
     if (
         ((mapa[(jg.posy + PXL_H + 1) / PXL_H][jg.posx / PXL_W] == 'p') ||
             (mapa[(jg.posy + PXL_H + 1) / PXL_H][jg.posx / PXL_W] == 'D'))
@@ -342,4 +348,10 @@ bool colision(char mapa[SIZE][SIZE], player_& jg)
         return (coll_down = true);
     else
         return (coll_down = false);
+}
+
+void mov_futbol(int x, int vel, bool dir)
+{
+    x += vel;
+    
 }
