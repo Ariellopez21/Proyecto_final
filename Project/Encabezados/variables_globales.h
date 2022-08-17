@@ -15,6 +15,7 @@
 #define VALOR_GRAVITY 22
 #define VEL_X0 12
 #define FASES 3
+ALLEGRO_FONT* font;
 ALLEGRO_EVENT_QUEUE* queue;
 ALLEGRO_TIMER* timer;
 ALLEGRO_DISPLAY* disp;

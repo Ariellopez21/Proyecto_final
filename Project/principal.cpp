@@ -5,12 +5,14 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_color.h>
+#include <allegro5/allegro_font.h>
 #include "Encabezados/variables_globales.h"
 #include "Encabezados/archivos.h"
 #include "Encabezados/estructuras_funciones.h"
 #include "Encabezados/dibujado.h"
 #include "Encabezados/funciones_menu.h"
-void mov_futbol(int x, int vel, bool dir);
+void mov_futbol(enemy_ &futbol, char mapa[SIZE][SIZE]);
+bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true);
 int main()
 {
     /*_______________________________________________________________________________________________
@@ -18,7 +20,7 @@ int main()
     _________________________________________________________________________________________________*/
     int x = 0, y = 0, i = 0, j = 0, k = 0, tipo = 1;
     int mouseX = 10, mouseY = 10, MouseSpeed = 5;
-    char mapa[SIZE][SIZE];
+    char mapa[SIZE][SIZE], fwall[SIZE][SIZE];
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
     bool flag_key_up_true = false, pausa = false, flag_key_p_true = false,
@@ -27,6 +29,7 @@ int main()
     ///////////////////////////////////////INICIAR ARCHIVO///////////////////////////////////////////
     _________________________________________________________________________________________________*/
     tipo = ABRIR_MAPA(mapa, tipo);       //TIPO: decide si es mapa 1 o 2, se usará más adelante...
+    ABRIR_MAPA(fwall, 3);
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////INICIAR ALLEGRO///////////////////////////////////////////
     _________________________________________________________________________________________________*/
@@ -34,10 +37,11 @@ int main()
     al_init_image_addon();
     al_install_keyboard();
     al_install_mouse();
-
+    
     al_set_window_position(disp, 800, 100);
     al_set_window_title(disp, "Planeta Gol!");
 
+    font = al_create_builtin_font();
     timer = al_create_timer(1.0 / 30.0);
     queue = al_create_event_queue();
     disp = al_create_display(WIDTH, HEIGHT);
@@ -94,8 +98,7 @@ int main()
     printf
     (
         "posx=%d, posy=%d, salto=%d, gravity=%d, powerup=%d, colx=%d, coly=%d, vida=%f, lvlup=%f",
-        jg[0].posx, jg[0].posy, jg[0].salto, jg[0].gravity, jg[0].powerup, jg[0].col_x, jg[0].col_y,
-        jg[0].vida, jg[0].lvlup
+        jg[0].posx, jg[0].posy, jg[0].salto, jg[0].gravity, jg[0].exp,jg[0].vida, jg[0].lvlup
     );
 
     /*_______________________________________________________________________________________________
@@ -112,7 +115,7 @@ int main()
     while (!done)
     {
         al_wait_for_event(queue, &event);
-        //mov_futbol(futbol[0].posx, futbol[0].velx, futbol[0].dir);
+        mov_futbol(futbol[0], fwall);
         switch (event.type)
         {
         case ALLEGRO_EVENT_TIMER:
@@ -215,6 +218,7 @@ int main()
                 jg[0].posy = HEIGHT - PXL_H;
 
             al_draw_bitmap_region(jg0_Idle, 0, 0, PXL_W, PXL_H, jg[0].posx, jg[0].posy, 0);
+            al_draw_textf(font, al_map_rgb(255, 255, 255), 20, 0, 0, "%.0f", jg[0].vida);
             al_convert_mask_to_alpha(jg0_Idle, al_map_rgba(255, 0, 0, 255));
             al_draw_bitmap_region(futbol_img, 0, 0, PXL_W, PXL_H, futbol[0].posx, futbol[0].posy, 0);
             al_convert_mask_to_alpha(futbol_img, al_map_rgba(255, 0, 0, 255));
@@ -224,8 +228,48 @@ int main()
     exit_game();
     return 0;
 }
-void mov_futbol(int x, int vel, bool dir)
+void mov_futbol(enemy_ &futbol, char fwall[SIZE][SIZE])
 {
-    x += vel;
-    
+    if (futbol.dir)
+    {
+        futbol.posx += futbol.velx;
+        futbol.wall = coll_w(fwall, futbol.posx, futbol.posy, futbol.wall, futbol.dir);
+        if (futbol.wall)
+            futbol.dir = false;
+    }
+    else
+    {
+        futbol.posx -= futbol.velx;
+        futbol.wall = coll_w(fwall, futbol.posx, futbol.posy, futbol.wall, futbol.dir);
+        if (futbol.wall)
+            futbol.dir = true;
+    }
+
+}
+
+bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true)
+{
+    if(dir)
+    {
+        if ((fwall[y / PXL_H][(x + PXL_W*2) / PXL_W] == 'W')
+            ||
+            (fwall[(y + (PXL_H / 2)) / PXL_H][(x + PXL_W*2) / PXL_W] == 'W')
+            ||
+            (fwall[(y + PXL_H) / PXL_H][(x + PXL_W*2) / PXL_W] == 'W'))
+            wall_true = true;
+        else
+            wall_true = false;
+    }
+    else
+    {
+        if ((fwall[y / PXL_H][(x - 1) / PXL_W] == 'W')
+            ||
+            (fwall[(y + (PXL_H / 2)) / PXL_H][(x - 1) / PXL_W] == 'W')
+            ||
+            (fwall[(y + PXL_H) / PXL_H][(x - 1) / PXL_W] == 'W'))
+            wall_true = true;
+        else
+            wall_true = false;
+    }
+    return wall_true;
 }

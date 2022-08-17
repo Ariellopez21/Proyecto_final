@@ -24,9 +24,7 @@ struct player_
     int gravity;
     float vida;
     float lvlup;
-    int powerup;
-    int col_x;
-    int col_y;
+    int exp;
 }jg[FASES];
 
 struct enemy_
@@ -65,9 +63,7 @@ void VARIABLES_JUGADOR(player_ &jg, int fase)
         jg.gravity = VALOR_GRAVITY;
         jg.vida = 100;
         jg.lvlup = 0;
-        jg.powerup = 0;
-        jg.col_x = 0;
-        jg.col_y = 0;
+        jg.exp = 0;
     }
     else if (fase == 1)
     {
@@ -83,7 +79,7 @@ void VARIABLES_ENEMIGOS(enemy_ &en)
 {
     en.posx = 450;
     en.posy = 620;
-    en.velx = 10;
+    en.velx = 1;
     en.vely = 0;
     en.wall = false;
     en.live = true;

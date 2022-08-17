@@ -23,6 +23,16 @@ int ABRIR_MAPA(char mapa[SIZE][SIZE], int tipo)
         }
     }
 
+    if (tipo == 3)
+    {
+        fmapa = fopen("Archivos/wall_enemy.txt", "r");
+        if (fmapa == NULL)
+        {
+            printf("ERROR");
+            return 0;
+        }
+    }
+
     for (i = 0; i < SIZE; i++)
     {
         for (j = 0; j < SIZE; j++)
@@ -35,6 +45,7 @@ int ABRIR_MAPA(char mapa[SIZE][SIZE], int tipo)
             printf("%c", mapa[i][j]);
         printf("\n");
     }
+    printf("\n");
     fclose(fmapa);
     return tipo;
 }
