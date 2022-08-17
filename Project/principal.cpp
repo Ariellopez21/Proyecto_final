@@ -10,10 +10,10 @@
 #include "Encabezados/estructuras_funciones.h"
 #include "Encabezados/dibujado.h"
 #include "Encabezados/funciones_menu.h"
-bool coll_izq(char mapa[SIZE][SIZE], player_& jg, bool coll_left);
-bool coll_der(char mapa[SIZE][SIZE], player_& jg, bool coll_right);
-bool coll_up(char mapa[SIZE][SIZE], player_& jg, bool coll_up);
-bool coll_down(char mapa[SIZE][SIZE], player_& jg, bool coll_down);
+bool coll_izq(char mapa[SIZE][SIZE], int x, int y, bool coll_left);
+bool coll_der(char mapa[SIZE][SIZE], int x, int y, bool coll_right);
+bool coll_arriba(char mapa[SIZE][SIZE], int x, int y, bool coll_up);
+bool coll_abajo(char mapa[SIZE][SIZE], int x, int y, bool coll_down);
 
 void mov_futbol(int x, int vel, bool dir);
 int main()
@@ -117,73 +117,14 @@ int main()
     while (!done)
     {
         al_wait_for_event(queue, &event);
-        mov_futbol(futbol[0].posx, futbol[0].velx, futbol[0].dir);
+        //mov_futbol(futbol[0].posx, futbol[0].velx, futbol[0].dir);
         switch (event.type)
         {
         case ALLEGRO_EVENT_TIMER:
-            //coll_left = colision(mapa, jg[0]);
-            //coll_right
-            //coll_up
-            //coll_down
-
-            //CORTAR
-            //COLISION IZQ
-            if (
-                (mapa[jg[0].posy / PXL_H][(jg[0].posx - 1) / PXL_W] == 'p' ||
-                    mapa[jg[0].posy / PXL_H][(jg[0].posx - 1) / PXL_W] == 'D')
-                &&
-                (mapa[(jg[0].posy + (PXL_H / 2)) / PXL_H][(jg[0].posx - 1) / PXL_W] == 'p' ||
-                    mapa[(jg[0].posy + (PXL_H / 2)) / PXL_H][(jg[0].posx - 1) / PXL_W] == 'D')
-                &&
-                (mapa[(jg[0].posy + PXL_H) / PXL_H][(jg[0].posx - 1) / PXL_W] == 'p' ||
-                    mapa[(jg[0].posy + PXL_H) / PXL_H][(jg[0].posx - 1) / PXL_W] == 'D')
-                )
-                coll_left = true;
-            else
-                coll_left = false;
-
-            //COLISION DER
-            if (
-                (mapa[jg[0].posy / PXL_H][(jg[0].posx + SIZE + 5) / PXL_W] == 'p' ||
-                    mapa[jg[0].posy / PXL_H][(jg[0].posx + SIZE + 5) / PXL_W] == 'D')
-                &&
-                (mapa[(jg[0].posy + (PXL_H / 2)) / PXL_H][(jg[0].posx + SIZE + 5) / PXL_W] == 'p' ||
-                    mapa[(jg[0].posy + (PXL_H / 2)) / PXL_H][(jg[0].posx + SIZE + 5) / PXL_W] == 'D')
-                &&
-                (mapa[(jg[0].posy + PXL_H) / PXL_H][(jg[0].posx + SIZE + 5) / PXL_W] == 'p' ||
-                    mapa[(jg[0].posy + PXL_H) / PXL_H][(jg[0].posx + SIZE + 5) / PXL_W] == 'D')
-                )
-                coll_right = true;
-            else
-                coll_right = false;
-
-            //COLISION ARRIBA
-            if (
-                (mapa[jg[0].posy / PXL_H][jg[0].posx / PXL_W] == 'p')
-                ||
-                (mapa[jg[0].posy / PXL_H][(jg[0].posx + (SIZE / 2)) / PXL_W] == 'p')
-                ||
-                (mapa[jg[0].posy / PXL_H][(jg[0].posx + SIZE) / PXL_W] == 'p')
-                )
-                coll_up = true;
-            else
-                coll_up = false;
-
-            //COLISION ABAJO
-            if (
-                ((mapa[(jg[0].posy + PXL_H) / PXL_H][jg[0].posx / PXL_W] == 'p') ||
-                    (mapa[(jg[0].posy + PXL_H) / PXL_H][jg[0].posx / PXL_W] == 'D'))
-                ||
-                ((mapa[(jg[0].posy + PXL_H) / PXL_H][(jg[0].posx + (SIZE / 2)) / PXL_W] == 'p') ||
-                    (mapa[(jg[0].posy + PXL_H) / PXL_H][jg[0].posx / PXL_W] == 'D'))
-                ||
-                ((mapa[(jg[0].posy + PXL_H) / PXL_H][(jg[0].posx + SIZE) / PXL_W] == 'p') ||
-                    (mapa[(jg[0].posy + PXL_H) / PXL_H][jg[0].posx / PXL_W] == 'D'))
-                )
-                coll_down = true;
-            else
-                coll_down = false;
-            //HASTA AQUI
+            coll_left = coll_izq(mapa, jg[0].posx, jg[0].posy, coll_left);
+            coll_right = coll_der(mapa, jg[0].posx, jg[0].posy, coll_right);
+            coll_up = coll_arriba(mapa, jg[0].posx, jg[0].posy, coll_up);
+            coll_down = coll_abajo(mapa, jg[0].posx, jg[0].posy, coll_down);
 
             if (coll_down)
             {
@@ -288,62 +229,62 @@ int main()
     exit_game();
     return 0;
 }
-bool coll_izq(char mapa[SIZE][SIZE], player_& jg, bool coll_left)
+bool coll_izq(char mapa[SIZE][SIZE], int x, int y, bool coll_left)
 {
     if (
-        (mapa[jg.posy / PXL_H][(jg.posx - 1) / PXL_W] == 'p' ||
-            mapa[jg.posy / PXL_H][(jg.posx - 1) / PXL_W] == 'D')
+        (mapa[y / PXL_H][(x - 1) / PXL_W] == 'p' ||
+            mapa[y / PXL_H][(x - 1) / PXL_W] == 'D')
         &&
-        (mapa[(jg.posy + (PXL_H / 2)) / PXL_H][(jg.posx - 1) / PXL_W] == 'p' ||
-            mapa[(jg.posy + (PXL_H / 2)) / PXL_H][(jg.posx - 1) / PXL_W] == 'D')
+        (mapa[(y + (PXL_H / 2)) / PXL_H][(x - 1) / PXL_W] == 'p' ||
+            mapa[(y + (PXL_H / 2)) / PXL_H][(x - 1) / PXL_W] == 'D')
         &&
-        (mapa[(jg.posy + PXL_H) / PXL_H][(jg.posx - 1) / PXL_W] == 'p' ||
-            mapa[(jg.posy + PXL_H) / PXL_H][(jg.posx - 1) / PXL_W] == 'D')
+        (mapa[(y + PXL_H) / PXL_H][(x - 1) / PXL_W] == 'p' ||
+            mapa[(y + PXL_H) / PXL_H][(x - 1) / PXL_W] == 'D')
         )
-        return (coll_left=true);
+        return (coll_left = true);
     else
         return (coll_left = false);
 }
-bool coll_der(char mapa[SIZE][SIZE], player_& jg, bool coll_right)
+bool coll_der(char mapa[SIZE][SIZE], int x, int y, bool coll_right)
 {
     if (
-        (mapa[jg.posy / PXL_H][(jg.posx + SIZE + 5) / PXL_W] == 'p' ||
-            mapa[jg.posy / PXL_H][(jg.posx + SIZE + 5) / PXL_W] == 'D')
+        (mapa[y / PXL_H][(x + SIZE + 5) / PXL_W] == 'p' ||
+            mapa[y / PXL_H][(x + SIZE + 5) / PXL_W] == 'D')
         &&
-        (mapa[(jg.posy + (PXL_H / 2)) / PXL_H][(jg.posx + SIZE + 5) / PXL_W] == 'p' ||
-            mapa[(jg.posy + (PXL_H / 2)) / PXL_H][(jg.posx + SIZE + 5) / PXL_W] == 'D')
+        (mapa[(y + (PXL_H / 2)) / PXL_H][(x + SIZE + 5) / PXL_W] == 'p' ||
+            mapa[(y + (PXL_H / 2)) / PXL_H][(x + SIZE + 5) / PXL_W] == 'D')
         &&
-        (mapa[(jg.posy + PXL_H) / PXL_H][(jg.posx + SIZE + 5) / PXL_W] == 'p' ||
-            mapa[(jg.posy + PXL_H) / PXL_H][(jg.posx + SIZE + 5) / PXL_W] == 'D')
+        (mapa[(y + PXL_H) / PXL_H][(x + SIZE + 5) / PXL_W] == 'p' ||
+            mapa[(y + PXL_H) / PXL_H][(x + SIZE + 5) / PXL_W] == 'D')
         )
         return (coll_right = true);
     else
         return (coll_right = false);
 }
-bool coll_up(char mapa[SIZE][SIZE], player_& jg, bool coll_up)
+bool coll_arriba(char mapa[SIZE][SIZE], int x, int y, bool coll_up)
 {
     if (
-        (mapa[jg.posy / PXL_H][jg.posx / PXL_W] == 'p')
+        (mapa[y / PXL_H][x / PXL_W] == 'p')
         ||
-        (mapa[jg.posy / PXL_H][(jg.posx + (SIZE / 2)) / PXL_W] == 'p')
+        (mapa[y / PXL_H][(x + (SIZE / 2)) / PXL_W] == 'p')
         ||
-        (mapa[jg.posy / PXL_H][(jg.posx + SIZE) / PXL_W] == 'p')
+        (mapa[y / PXL_H][(x + SIZE) / PXL_W] == 'p')
         )
         return (coll_up = true);
     else
         return (coll_up = false);
 }
-bool coll_down(char mapa[SIZE][SIZE], player_& jg, bool coll_down)
+bool coll_abajo(char mapa[SIZE][SIZE], int x, int y, bool coll_down)
 {
     if (
-        ((mapa[(jg.posy + PXL_H + 1) / PXL_H][jg.posx / PXL_W] == 'p') ||
-            (mapa[(jg.posy + PXL_H + 1) / PXL_H][jg.posx / PXL_W] == 'D'))
+        ((mapa[(y + PXL_H + 1) / PXL_H][x / PXL_W] == 'p') ||
+            (mapa[(y + PXL_H + 1) / PXL_H][x / PXL_W] == 'D'))
         ||
-        ((mapa[(jg.posy + PXL_H + 1) / PXL_H][(jg.posx + (SIZE / 2)) / PXL_W] == 'p') ||
-            (mapa[(jg.posy + PXL_H + 1) / PXL_H][jg.posx / PXL_W] == 'D'))
+        ((mapa[(y + PXL_H + 1) / PXL_H][(x + (SIZE / 2)) / PXL_W] == 'p') ||
+            (mapa[(y + PXL_H + 1) / PXL_H][x / PXL_W] == 'D'))
         ||
-        ((mapa[(jg.posy + PXL_H + 1) / PXL_H][(jg.posx + SIZE) / PXL_W] == 'p') ||
-            (mapa[(jg.posy + PXL_H + 1) / PXL_H][jg.posx / PXL_W] == 'D'))
+        ((mapa[(y + PXL_H + 1) / PXL_H][(x + SIZE) / PXL_W] == 'p') ||
+            (mapa[(y + PXL_H + 1) / PXL_H][x / PXL_W] == 'D'))
         )
         return (coll_down = true);
     else
