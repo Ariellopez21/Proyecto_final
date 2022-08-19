@@ -15,14 +15,14 @@
 #define VALOR_GRAVITY 22
 #define VEL_X0 12
 #define FASES 3
-ALLEGRO_FONT* font;
+ALLEGRO_FONT* text_hp, *text_points, *text_exp;
 ALLEGRO_EVENT_QUEUE* queue;
 ALLEGRO_TIMER* timer;
 ALLEGRO_DISPLAY* disp;
 ALLEGRO_EVENT event;
 bool done = false;
 ALLEGRO_BITMAP
-* sky, * dirt, * platform, * perfil, * pwup, * bar,						//SCENE
+* sky, *sky_scroll, *dirt, * platform, * perfil, * pwup, * bar, *interfaz,						//SCENE
 * jg0_Idle, * jg0_Walk, * jg0_Jump, * jg0_Punch, * jg0_Damage,			//JUGADOR FASE 1
 * jg1_Idle, * jg1_Walk, * jg1_Jump, * jg1_Punch, * jg1_Damage,			//JUGADOR FASE 2
 * menu_principal, * menu_principal1, * menu_principal2, * menu_principal3,	//MENU PRINCIPAL

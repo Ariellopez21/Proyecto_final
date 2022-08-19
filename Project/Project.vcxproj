@@ -178,10 +178,12 @@
     <Image Include="Sprites\Enemigos\tennis.png" />
     <Image Include="Sprites\Escenario\bar.bmp" />
     <Image Include="Sprites\Escenario\dirt.bmp" />
+    <Image Include="Sprites\Escenario\Interfaz.png" />
     <Image Include="Sprites\Escenario\platform.bmp" />
     <Image Include="Sprites\Escenario\power_up.bmp" />
     <Image Include="Sprites\Escenario\profile.bmp" />
     <Image Include="Sprites\Escenario\sky.bmp" />
+    <Image Include="Sprites\Escenario\sky_scroll.png" />
     <Image Include="Sprites\Jugador\jg0_Damage.bmp" />
     <Image Include="Sprites\Jugador\jg0_Idle_Walk.bmp" />
     <Image Include="Sprites\Jugador\jg0_Jump.bmp" />

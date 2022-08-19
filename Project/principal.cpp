@@ -12,7 +12,9 @@
 #include "Encabezados/dibujado.h"
 #include "Encabezados/funciones_menu.h"
 void mov_futbol(enemy_ &futbol, char mapa[SIZE][SIZE]);
+int golpe(player_& jg, enemy_& en);
 bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true);
+float damage(player_& jg, enemy_& en);
 int main()
 {
     /*_______________________________________________________________________________________________
@@ -23,7 +25,7 @@ int main()
     char mapa[SIZE][SIZE], fwall[SIZE][SIZE];
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
-    bool flag_key_up_true = false, pausa = false, flag_key_p_true = false,
+    bool flag_key_up_true = false, pausa = false, flag_key_p_true = false, flag_key_x_true = false,
         coll_left = false, coll_right = false, coll_up = false, coll_down = false;
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////INICIAR ARCHIVO///////////////////////////////////////////
@@ -38,10 +40,12 @@ int main()
     al_install_keyboard();
     al_install_mouse();
     
-    al_set_window_position(disp, 800, 100);
+    al_set_window_position(disp, 1600, 100);
     al_set_window_title(disp, "Planeta Gol!");
 
-    font = al_create_builtin_font();
+    text_hp = al_create_builtin_font();
+    text_points = al_create_builtin_font();
+    text_exp = al_create_builtin_font();
     timer = al_create_timer(1.0 / 30.0);
     queue = al_create_event_queue();
     disp = al_create_display(WIDTH, HEIGHT);
@@ -59,6 +63,8 @@ int main()
     perfil = al_load_bitmap("Sprites/Escenario/profile.bmp");
     pwup = al_load_bitmap("Sprites/Escenario/power_up.bmp");
     bar = al_load_bitmap("Sprites/Escenario/bar.bmp");
+    sky_scroll = al_load_bitmap("Sprites/Escenario/sky_scroll.png");
+    interfaz = al_load_bitmap("Sprites/Escenario/Interfaz.png");
 
     jg0_Idle = al_load_bitmap("Sprites/Jugador/jg0_Idle_Walk.bmp");
     jg0_Walk = al_load_bitmap("Sprites/Jugador/jg0_Idle_Walk.bmp");
@@ -97,7 +103,7 @@ int main()
         VARIABLES_JUGADOR(jg[i], i);
     printf
     (
-        "posx=%d, posy=%d, salto=%d, gravity=%d, powerup=%d, colx=%d, coly=%d, vida=%f, lvlup=%f",
+        "posx=%d, posy=%d, salto=%d, gravity=%d, exp=%d, vida=%f, lvlup=%f",
         jg[0].posx, jg[0].posy, jg[0].salto, jg[0].gravity, jg[0].exp,jg[0].vida, jg[0].lvlup
     );
 
@@ -115,15 +121,16 @@ int main()
     while (!done)
     {
         al_wait_for_event(queue, &event);
-        mov_futbol(futbol[0], fwall);
         switch (event.type)
         {
         case ALLEGRO_EVENT_TIMER:
+    /*_______________________________________________________________________________________________
+    /////////////////////////////////////////////COLISIÓN////////////////////////////////////////////
+    _________________________________________________________________________________________________*/
             coll_left = coll_izq(mapa, jg[0].posx, jg[0].posy, coll_left);
             coll_right = coll_der(mapa, jg[0].posx, jg[0].posy, coll_right);
             coll_up = coll_arriba(mapa, jg[0].posx, jg[0].posy, coll_up);
             coll_down = coll_abajo(mapa, jg[0].posx, jg[0].posy, coll_down);
-
             if (coll_down)
             {
                 jg[0].gravity = 0;
@@ -132,10 +139,9 @@ int main()
             {
                 jg[0].gravity = VALOR_GRAVITY;
             }
-
             if (!coll_up)
             {
-                if (key[ALLEGRO_KEY_UP] && !flag_key_up_true)
+                if (key[ALLEGRO_KEY_Z] && !flag_key_up_true)
                 {
                     jg[0].posy = jg[0].posy - jg[0].salto;
                     if (jg[0].salto > 0)
@@ -162,26 +168,47 @@ int main()
                 jg[0].salto = 0;
                 jg[0].posy = jg[0].posy + jg[0].gravity;
             }
-
             if (!coll_left)
             {
                 if (key[ALLEGRO_KEY_LEFT])
                 {
+                    jg[0].dir = false;
                     jg[0].posx = jg[0].posx - jg[0].velx;
                     if (jg[0].posx <= 0)
                         jg[0].posx = WIDTH - PXL_W;
                 }
             }
-
             if (!coll_right)
             {
                 if (key[ALLEGRO_KEY_RIGHT])
                 {
+                    jg[0].dir = true;
                     jg[0].posx = jg[0].posx + jg[0].velx;
                     if (jg[0].posx >= WIDTH)
                         jg[0].posx = 0;
                 }
             }
+    /*_______________________________________________________________________________________________
+    /////////////////////////////////////////////ACCIONES////////////////////////////////////////////
+    _________________________________________________________________________________________________*/
+            if (key[ALLEGRO_KEY_P] && !flag_key_p_true)
+            {
+                flag_key_p_true = true;
+                printf("entra?\t");
+            }
+            if (flag_key_p_true && !key[ALLEGRO_KEY_P])     //PAUSA
+            {
+                done = func_pause(pausa);
+                flag_key_p_true = false;
+                printf("OUT?\t");
+            }
+            if (key[ALLEGRO_KEY_X])
+            {
+                futbol[0].hp = golpe(jg[0], futbol[0]);
+            }
+
+            if (jg[0].vida <= 0)                //MUERTE
+                done = true;
                         
             if (key[ALLEGRO_KEY_ESCAPE])
                 done = true;
@@ -193,22 +220,23 @@ int main()
             break;
         case ALLEGRO_EVENT_KEY_DOWN:
             key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
-         
-            if (key[ALLEGRO_KEY_P] && !flag_key_p_true)
-            {
-                flag_key_p_true = true;
-                printf("entra?\t");
-            }
             break;
         case ALLEGRO_EVENT_KEY_UP:
             key[event.keyboard.keycode] &= KEY_RELEASED;
             break;
         }
-        if (flag_key_p_true && !key[ALLEGRO_KEY_P])//PAUSA
+    /*_______________________________________________________________________________________________
+    /////////////////////////////////////////////ENEMIGOS////////////////////////////////////////////
+    _________________________________________________________________________________________________*/
+        mov_futbol(futbol[0], fwall);
+        jg[0].vida = damage(jg[0], futbol[0]);
+        if (futbol[0].hp <= 0)
         {
-            done = func_pause(pausa);
-            flag_key_p_true = false;
-        } 
+            futbol[0].draw = false;
+        }
+    /*_______________________________________________________________________________________________
+    /////////////////////////////////////////////DIBUJO//////////////////////////////////////////////
+    _________________________________________________________________________________________________*/
         if (al_is_event_queue_empty(queue) && (!done))
         {
             al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -218,10 +246,14 @@ int main()
                 jg[0].posy = HEIGHT - PXL_H;
 
             al_draw_bitmap_region(jg0_Idle, 0, 0, PXL_W, PXL_H, jg[0].posx, jg[0].posy, 0);
-            al_draw_textf(font, al_map_rgb(255, 255, 255), 20, 0, 0, "%.0f", jg[0].vida);
+            al_draw_scaled_bitmap(interfaz, 0, 0, 485, 248, 0, 0, 275, 115, 0);
+            al_draw_textf(text_hp, al_map_rgb(0, 0, 0), 155, 56, 0, "HP: %.0f", jg[0].vida);
             al_convert_mask_to_alpha(jg0_Idle, al_map_rgba(255, 0, 0, 255));
-            al_draw_bitmap_region(futbol_img, 0, 0, PXL_W, PXL_H, futbol[0].posx, futbol[0].posy, 0);
-            al_convert_mask_to_alpha(futbol_img, al_map_rgba(255, 0, 0, 255));
+            if(futbol[0].draw)
+            {
+                al_draw_bitmap_region(futbol_img, 0, 0, PXL_W, PXL_H, futbol[0].posx, futbol[0].posy, 0);
+                al_convert_mask_to_alpha(futbol_img, al_map_rgba(255, 0, 0, 255));
+            }
             al_flip_display();
         }
     }
@@ -244,7 +276,6 @@ void mov_futbol(enemy_ &futbol, char fwall[SIZE][SIZE])
         if (futbol.wall)
             futbol.dir = true;
     }
-
 }
 
 bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true)
@@ -272,4 +303,63 @@ bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true)
             wall_true = false;
     }
     return wall_true;
+}
+
+float damage(player_ &jg, enemy_ &en)
+{
+    if (((jg.posx+PXL_CENTROW)>=en.posx) && 
+        ((jg.posx + PXL_CENTROW) <= en.posx + PXL_W) && 
+        ((jg.posy + PXL_CENTROH) >= en.posy) && 
+        ((jg.posy + PXL_CENTROH) <= en.posy + PXL_H))
+    {
+        en.dmg = true;
+    }
+    else
+    {
+        en.dmg = false;
+    }
+    if (en.dmg)
+    {
+        jg.vida--;
+    }
+    return jg.vida;
+}
+int golpe(player_& jg, enemy_& en)
+{
+    if (jg.dir)
+    {
+        if ((en.posx >= jg.posx+PXL_W && en.posx <= jg.posx+PXL_W*2) 
+            && 
+            (en.posy >= jg.posy && en.posy <= jg.posy+PXL_H))
+        {
+            en.live = false;
+            printf("MUERE\t");
+        }
+        else
+        {
+            en.live = true;
+            printf("VIVO\t");
+        }
+    }
+    else
+    {
+        if ((en.posx >= jg.posx - PXL_W && en.posx <= jg.posx)
+            &&
+            (en.posy >= jg.posy && en.posy <= jg.posy + PXL_H))
+        {
+            en.live = false;
+            printf("MUERE\t");
+        }
+        else
+        {
+            en.live = true;
+            printf("VIVO\t");
+        }
+    }
+    if (!en.live)
+    {
+        en.hp--;
+        printf("%d", en.hp);
+    }
+    return en.hp;
 }

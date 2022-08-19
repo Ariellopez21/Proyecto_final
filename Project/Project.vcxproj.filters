@@ -153,5 +153,11 @@
     <Image Include="Screen\pause_2.png">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="Sprites\Escenario\sky_scroll.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Sprites\Escenario\Interfaz.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
 </Project>

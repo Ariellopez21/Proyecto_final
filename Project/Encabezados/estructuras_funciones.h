@@ -25,6 +25,7 @@ struct player_
     float vida;
     float lvlup;
     int exp;
+    bool dir;
 }jg[FASES];
 
 struct enemy_
@@ -35,9 +36,10 @@ struct enemy_
     int vely;
     bool wall;
     bool live;
-    int dmg;
+    bool dmg;
     bool dir;
-    int gen;
+    int hp;
+    bool draw;
 }futbol[1], basket[1], tennis[1], american[1], cannon[1]; //EN PROCESO...
 /*_______________________________________________________________________________________________
 ///////////////////////////////////////DECLARAR FUNCIONES////////////////////////////////////////
@@ -64,6 +66,7 @@ void VARIABLES_JUGADOR(player_ &jg, int fase)
         jg.vida = 100;
         jg.lvlup = 0;
         jg.exp = 0;
+        jg.dir = true;  //derecha
     }
     else if (fase == 1)
     {
@@ -83,9 +86,10 @@ void VARIABLES_ENEMIGOS(enemy_ &en)
     en.vely = 0;
     en.wall = false;
     en.live = true;
-    en.dmg = 1;     //-1 por contacto
+    en.dmg = false;     //-1 por contacto
     en.dir = true;  //derecha
-    en.gen = 0;     //cannon->basket...
+    en.hp = 10;     
+    en.draw = true;
 }
 
 bool coll_izq(char mapa[SIZE][SIZE], int x, int y, bool coll_left)
@@ -136,14 +140,14 @@ bool coll_arriba(char mapa[SIZE][SIZE], int x, int y, bool coll_up)
 bool coll_abajo(char mapa[SIZE][SIZE], int x, int y, bool coll_down)
 {
     if (
-        ((mapa[(y + PXL_H + 1) / PXL_H][x / PXL_W] == 'p') ||
-            (mapa[(y + PXL_H + 1) / PXL_H][x / PXL_W] == 'D'))
+        ((mapa[(y + PXL_H) / PXL_H][x / PXL_W] == 'p') ||
+            (mapa[(y + PXL_H) / PXL_H][x / PXL_W] == 'D'))
         ||
-        ((mapa[(y + PXL_H + 1) / PXL_H][(x + (SIZE / 2)) / PXL_W] == 'p') ||
-            (mapa[(y + PXL_H + 1) / PXL_H][x / PXL_W] == 'D'))
+        ((mapa[(y + PXL_H) / PXL_H][(x + (SIZE / 2)) / PXL_W] == 'p') ||
+            (mapa[(y + PXL_H) / PXL_H][x / PXL_W] == 'D'))
         ||
-        ((mapa[(y + PXL_H + 1) / PXL_H][(x + SIZE) / PXL_W] == 'p') ||
-            (mapa[(y + PXL_H + 1) / PXL_H][x / PXL_W] == 'D'))
+        ((mapa[(y + PXL_H) / PXL_H][(x + SIZE) / PXL_W] == 'p') ||
+            (mapa[(y + PXL_H) / PXL_H][x / PXL_W] == 'D'))
         )
         return (coll_down = true);
     else
