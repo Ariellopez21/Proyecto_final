@@ -7,12 +7,12 @@
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_font.h>
 #include "Encabezados/variables_globales.h"
-#include "Encabezados/archivos.h"
 #include "Encabezados/estructuras_funciones.h"
+#include "Encabezados/archivos.h"
 #include "Encabezados/dibujado.h"
 #include "Encabezados/funciones_menu.h"
 void mov_futbol(enemy_ &en, char mapa[SIZE][SIZE]);
-float golpe(player_& jg, enemy_& en);
+int golpe(player_& jg, enemy_& en, int points);
 bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true);
 float damage(player_& jg, enemy_& en);
 int main()
@@ -20,8 +20,8 @@ int main()
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////DECLARAR VARIABLES////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    int x = 0, y = 0, P = 0, i = 0, j = 0, k = 0, tipo = 1, cont_futbol = 0;
-    float tempo_enemy = -12.0, tempo_enemy_reset = 0.0;
+    int x = 0, y = 0, P = 0, i = 0, j = 0, k = 0, tipo = 1, cont_futbol = 0, puntuacion = 0, exp = 0;
+    float tempo_enemy = -12.0, tempo_enemy_reset = 0.0, tiempo = 0.0;
     int mouseX = 10, mouseY = 10, MouseSpeed = 5;
     char mapa[SIZE][SIZE], fwall[SIZE][SIZE];
     unsigned char key[ALLEGRO_KEY_MAX];
@@ -210,7 +210,7 @@ int main()
             {
                 for(P=0; P<6; P++)
                 {
-                    futbol[P].hp = golpe(jg[0], futbol[P]);
+                    puntuacion=golpe(jg[0], futbol[P], puntuacion);
                 }
             }
 
@@ -237,6 +237,12 @@ int main()
     _________________________________________________________________________________________________*/
         tempo_enemy += 0.0333333333334;
         tempo_enemy_reset += 0.0333333333334;
+        tiempo += 0.03333333334;
+        if(tiempo>=2.0)
+        {
+            puntuacion++;
+            tiempo = 0.0;
+        }
         if (tempo_enemy >= -10.0 && tempo_enemy <= -5.0)         //GENERAR POR PRIMERA VEZ E INICIALIZAR ENEMIGOS
         {
             for(cont_futbol = 0; cont_futbol < 6; cont_futbol++)
@@ -272,7 +278,10 @@ int main()
         {
             mov_futbol(futbol[cont_futbol], fwall);
         }
-        jg[0].vida = damage(jg[0], futbol[0]);
+        for (cont_futbol = 0; cont_futbol < 6; cont_futbol++)
+        {
+            jg[0].vida = damage(jg[0], futbol[cont_futbol]);
+        }
         for (cont_futbol = 0; cont_futbol < 6; cont_futbol++)
         {
             if (futbol[cont_futbol].hp <= 0.0 && futbol[cont_futbol].flag_death)
@@ -293,7 +302,9 @@ int main()
 
             al_draw_bitmap_region(jg0_Idle, 0, 0, PXL_W, PXL_H, jg[0].posx, jg[0].posy, 0);
             al_draw_scaled_bitmap(interfaz, 0, 0, 485, 248, 0, 0, 275, 115, 0);
-            al_draw_textf(text_hp, al_map_rgb(0, 0, 0), 155, 56, 0, "HP: %.0f", jg[0].vida);
+            al_draw_textf(text_hp, al_map_rgb(0, 0, 0), 150, 54, 0, "HP: %.0f", jg[0].vida);
+            al_draw_textf(text_points, al_map_rgb(0, 0, 0), 130, 20, 0, "POINTS: %d", puntuacion);
+            al_draw_textf(text_exp, al_map_rgb(0, 0, 0), 130, 92, 0, "XP: %d", exp);
             al_convert_mask_to_alpha(jg0_Idle, al_map_rgba(255, 0, 0, 255));
             for (cont_futbol = 0; cont_futbol < 6; cont_futbol++)
             {
@@ -311,6 +322,7 @@ int main()
             al_flip_display();        
         }
     }
+
     exit_game();
     return 0;
 }
@@ -376,7 +388,7 @@ float damage(player_ &jg, enemy_ &en)
     }
     return jg.vida;
 }
-float golpe(player_& jg, enemy_& en)
+int golpe(player_& jg, enemy_& en, int points)
 {
     if (jg.dir)
     {
@@ -409,6 +421,10 @@ float golpe(player_& jg, enemy_& en)
         en.hp--;
         printf("->%.3f\t", en.hp);
         en.flag_death = true;
+        if (en.hp <= 0.0)
+        {
+            points +=10;
+        }
     }
-    return en.hp;
+    return points;
 }

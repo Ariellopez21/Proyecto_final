@@ -49,3 +49,7 @@ int ABRIR_MAPA(char mapa[SIZE][SIZE], int tipo)
     fclose(fmapa);
     return tipo;
 }
+int RANK(int puntos)
+{
+
+}
