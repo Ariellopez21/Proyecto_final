@@ -142,6 +142,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="x64\Debug\Project.exe.recipe" />
+    <None Include="x64\Debug\Project.ilk" />
+    <None Include="x64\Debug\vc143.idb" />
+    <None Include="x64\Debug\vc143.pdb" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="principal.cpp" />
@@ -157,6 +161,9 @@
     <Text Include="Archivos\Mapa_inicial.txt" />
     <Text Include="Archivos\Mapa_jefe.txt" />
     <Text Include="Archivos\wall_enemy.txt" />
+    <Text Include="x64\Debug\Project.Build.CppClean.log" />
+    <Text Include="x64\Debug\Project.log" />
+    <Text Include="x64\Debug\Project.vcxproj.FileListAbsolute.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Screen\history.bmp" />
@@ -192,6 +199,9 @@
     <Image Include="Sprites\Jugador\jg1_Idle_Walk.bmp" />
     <Image Include="Sprites\Jugador\jg1_Jump.bmp" />
     <Image Include="Sprites\Jugador\jg1_Punch.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="x64\Debug\principal.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

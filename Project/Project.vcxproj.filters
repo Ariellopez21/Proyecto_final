@@ -31,6 +31,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="x64\Debug\Project.exe.recipe" />
+    <None Include="x64\Debug\Project.ilk" />
+    <None Include="x64\Debug\vc143.idb" />
+    <None Include="x64\Debug\vc143.pdb" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="principal.cpp">
@@ -58,6 +62,9 @@
     <Text Include="Archivos\Mapa_jefe.txt" />
     <Text Include="Archivos\Mapa_inicial.txt" />
     <Text Include="Archivos\wall_enemy.txt" />
+    <Text Include="x64\Debug\Project.Build.CppClean.log" />
+    <Text Include="x64\Debug\Project.log" />
+    <Text Include="x64\Debug\Project.vcxproj.FileListAbsolute.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Screen\history.bmp">
@@ -159,5 +166,8 @@
     <Image Include="Sprites\Escenario\Interfaz.png">
       <Filter>Archivos de recursos</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="x64\Debug\principal.obj" />
   </ItemGroup>
 </Project>

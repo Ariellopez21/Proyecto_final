@@ -6,14 +6,16 @@ enum animacion
 {
     ann_quiet = 0, ann_up = 1, ann_right = 2, ann_left = 3, ann_punch = 4
 };          //IDEA...
-enum pos_enemy
+enum pos_enemy_futbol
 {
-    F1x = 288,
-    F1y = 200,
-    F2x=264,
-    F2y=482,
-
-};  //IDEA...
+    F1 = 0, F2 = 1, F3 = 2, F4 = 3, F5 = 4, F6 = 5, 
+    F1x = 288, F1y = 220,
+    F2x = 264, F2y = 500,
+    F3x = 108, F3y = 580,
+    F4x = 450, F4y = 620,
+    F5x = 100, F5y = 740,
+    F6x = 400, F6y = 740
+};  
 
 struct player_
 {
@@ -32,20 +34,22 @@ struct enemy_
 {
     int posx;
     int posy;
-    int velx;
-    int vely;
+    float velx;
+    float vely;
     bool wall;
     bool live;
     bool dmg;
     bool dir;
-    int hp;
+    float hp;
     bool draw;
-}futbol[1], basket[1], tennis[1], american[1], cannon[1]; //EN PROCESO...
+    bool flag_death;
+}futbol[6], basket[1], tennis[1], american[1], cannon[1]; //EN PROCESO...
 /*_______________________________________________________________________________________________
 ///////////////////////////////////////DECLARAR FUNCIONES////////////////////////////////////////
 _________________________________________________________________________________________________*/
 void VARIABLES_JUGADOR(player_& jg, int fase);
-void VARIABLES_ENEMIGOS(enemy_& en);            //EN PROCESO...
+void VARIABLES_ENEMIGOS_INICIAL(enemy_& en, int i);            //EN PROCESO...
+void VARIABLES_ENEMIGOS_RESET(enemy_& en, int i);
 bool coll_izq(char mapa[SIZE][SIZE], int x, int y, bool coll_left);
 bool coll_der(char mapa[SIZE][SIZE], int x, int y, bool coll_right);
 bool coll_arriba(char mapa[SIZE][SIZE], int x, int y, bool coll_up);
@@ -78,18 +82,90 @@ void VARIABLES_JUGADOR(player_ &jg, int fase)
     }
 }
 
-void VARIABLES_ENEMIGOS(enemy_ &en)
+void VARIABLES_ENEMIGOS_INICIAL(enemy_ &en, int i)
 {
-    en.posx = 450;
-    en.posy = 620;
-    en.velx = 1;
-    en.vely = 0;
+    if (i == F1)
+    {
+        en.posx = F1x;
+        en.posy = F1y;
+    }
+    else if (i == F2)
+    {
+        en.posx = F2x;
+        en.posy = F2y;
+    }
+    else if (i == F3)
+    {
+        en.posx = F3x;
+        en.posy = F3y;
+    }
+    else if (i == F4)
+    {
+        en.posx = F4x;
+        en.posy = F4y;
+    }
+    else if (i == F5)
+    {
+        en.posx = F5x;
+        en.posy = F5y;
+    }
+    else if (i == F6)
+    {
+        en.posx = F6x;
+        en.posy = F6y;
+    }
+        en.velx = 1.0;
+        en.vely = 0.0;
+        en.wall = false;
+        en.live = true;
+        en.dmg = false;     //-1 por contacto
+        en.dir = true;  //derecha
+        en.hp = 0.0;
+        en.draw = true;
+}
+void VARIABLES_ENEMIGOS_RESET(enemy_& en, int i)
+{
+    if (i == F1)
+    {
+        en.posx = F1x;
+        en.posy = F1y;
+    }
+    else if (i == F2)
+    {
+        en.posx = F2x;
+        en.posy = F2y;
+    }
+    else if (i == F3)
+    {
+        en.posx = F3x;
+        en.posy = F3y;
+    }
+    else if (i == F4)
+    {
+        en.posx = F4x;
+        en.posy = F4y;
+    }
+    else if (i == F5)
+    {
+        en.posx = F5x;
+        en.posy = F5y;
+    }
+    else if (i == F6)
+    {
+        en.posx = F6x;
+        en.posy = F6y;
+    }
+    if(en.velx <20.0)
+        en.velx += 0.333334;
+    en.vely = 0.0;
     en.wall = false;
     en.live = true;
     en.dmg = false;     //-1 por contacto
     en.dir = true;  //derecha
-    en.hp = 10;     
+    if(en.hp < 10.0)
+        en.hp += futbol[0].velx;
     en.draw = true;
+    en.flag_death = false;
 }
 
 bool coll_izq(char mapa[SIZE][SIZE], int x, int y, bool coll_left)

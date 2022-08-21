@@ -17,7 +17,7 @@
 #define FASES 3
 ALLEGRO_FONT* text_hp, *text_points, *text_exp;
 ALLEGRO_EVENT_QUEUE* queue;
-ALLEGRO_TIMER* timer;
+ALLEGRO_TIMER* timer, *timer_enemy;
 ALLEGRO_DISPLAY* disp;
 ALLEGRO_EVENT event;
 bool done = false;

@@ -11,8 +11,8 @@
 #include "Encabezados/estructuras_funciones.h"
 #include "Encabezados/dibujado.h"
 #include "Encabezados/funciones_menu.h"
-void mov_futbol(enemy_ &futbol, char mapa[SIZE][SIZE]);
-int golpe(player_& jg, enemy_& en);
+void mov_futbol(enemy_ &en, char mapa[SIZE][SIZE]);
+float golpe(player_& jg, enemy_& en);
 bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true);
 float damage(player_& jg, enemy_& en);
 int main()
@@ -20,7 +20,8 @@ int main()
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////DECLARAR VARIABLES////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    int x = 0, y = 0, i = 0, j = 0, k = 0, tipo = 1;
+    int x = 0, y = 0, P = 0, i = 0, j = 0, k = 0, tipo = 1, cont_futbol = 0;
+    float tempo_enemy = -12.0, tempo_enemy_reset = 0.0;
     int mouseX = 10, mouseY = 10, MouseSpeed = 5;
     char mapa[SIZE][SIZE], fwall[SIZE][SIZE];
     unsigned char key[ALLEGRO_KEY_MAX];
@@ -39,14 +40,12 @@ int main()
     al_init_image_addon();
     al_install_keyboard();
     al_install_mouse();
-    
-    al_set_window_position(disp, 1600, 100);
-    al_set_window_title(disp, "Planeta Gol!");
 
     text_hp = al_create_builtin_font();
     text_points = al_create_builtin_font();
     text_exp = al_create_builtin_font();
     timer = al_create_timer(1.0 / 30.0);
+    timer_enemy = al_create_timer(1.0);
     queue = al_create_event_queue();
     disp = al_create_display(WIDTH, HEIGHT);
 
@@ -54,6 +53,7 @@ int main()
     al_register_event_source(queue, al_get_display_event_source(disp));
     al_register_event_source(queue, al_get_timer_event_source(timer));
     al_register_event_source(queue, al_get_mouse_event_source());
+    al_register_event_source(queue, al_get_timer_event_source(timer_enemy));
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////REGISTRAR IMGS////////////////////////////////////////////
     _________________________________________________________________________________________________*/
@@ -111,7 +111,11 @@ int main()
     ////////////////////////////////////INICIALIZAR ENEMIGOS/////////////////////////////////////////
     _________________________________________________________________________________________________*/
     srand(time(0));
-    VARIABLES_ENEMIGOS(futbol[0]);
+    for(i=0; i<6; i++)
+    {
+        VARIABLES_ENEMIGOS_INICIAL(futbol[i], i);
+        printf("\n%d - %d\t[HP:%.3f]", futbol[i].posx, futbol[i].posy, futbol[i].hp);
+    }
     /*________________________________________________________________________________________________
     /////////////////////////////////////////INICIA EL JUEGO//////////////////////////////////////////
     _________________________________________________________________________________________________*/
@@ -202,9 +206,12 @@ int main()
                 flag_key_p_true = false;
                 printf("OUT?\t");
             }
-            if (key[ALLEGRO_KEY_X])
+            if (key[ALLEGRO_KEY_X])                         //GOLPE
             {
-                futbol[0].hp = golpe(jg[0], futbol[0]);
+                for(P=0; P<6; P++)
+                {
+                    futbol[P].hp = golpe(jg[0], futbol[P]);
+                }
             }
 
             if (jg[0].vida <= 0)                //MUERTE
@@ -228,11 +235,50 @@ int main()
     /*_______________________________________________________________________________________________
     /////////////////////////////////////////////ENEMIGOS////////////////////////////////////////////
     _________________________________________________________________________________________________*/
-        mov_futbol(futbol[0], fwall);
-        jg[0].vida = damage(jg[0], futbol[0]);
-        if (futbol[0].hp <= 0)
+        tempo_enemy += 0.0333333333334;
+        tempo_enemy_reset += 0.0333333333334;
+        if (tempo_enemy >= -10.0 && tempo_enemy <= -5.0)         //GENERAR POR PRIMERA VEZ E INICIALIZAR ENEMIGOS
         {
-            futbol[0].draw = false;
+            for(cont_futbol = 0; cont_futbol < 6; cont_futbol++)
+            {
+                if (futbol[cont_futbol].hp <= 0.0 && futbol[cont_futbol].draw)
+                {
+                    futbol[cont_futbol].hp += futbol[cont_futbol].velx;
+                    futbol[cont_futbol].velx += 0.3333334;
+                    futbol[cont_futbol].flag_death = false;
+                    printf("VELOCIDAD:[%.3f]\t VIDA:[%.3f] --- POSX:[%d]; POSY:[%d]\n", futbol[cont_futbol].velx, futbol[cont_futbol].hp, futbol[cont_futbol].posx, futbol[cont_futbol].posy);
+                }
+            }
+        }
+        if (tempo_enemy_reset >= 15.0 && tempo_enemy_reset <= 18.0)    //EN CASO DE MORIR - ACÁ REAPARECEN
+        {
+            for (cont_futbol = 0; cont_futbol < 6; cont_futbol++)
+            {
+                if (futbol[cont_futbol].posx == 0.0 && futbol[cont_futbol].posy == 0.0)
+                {
+                    printf("RESET\t");
+                    VARIABLES_ENEMIGOS_RESET(futbol[cont_futbol], cont_futbol);
+                    printf("VEL:[%.3f]\t HP:[%.3f] --- X:[%d]; Y:[%d]\n", futbol[cont_futbol].velx, futbol[cont_futbol].hp, futbol[cont_futbol].posx, futbol[cont_futbol].posy);
+                }
+            }
+        }
+        if (tempo_enemy_reset >= 20.0 && tempo_enemy >= 0.0)                           //TIEMPO PARA EL REINICIO DEL TEMPORIZADOR
+        {
+            printf("\nCERO\t");
+            tempo_enemy = -15.0;
+            tempo_enemy_reset = 0.0;
+        }
+        for (cont_futbol = 0; cont_futbol < 6; cont_futbol++)
+        {
+            mov_futbol(futbol[cont_futbol], fwall);
+        }
+        jg[0].vida = damage(jg[0], futbol[0]);
+        for (cont_futbol = 0; cont_futbol < 6; cont_futbol++)
+        {
+            if (futbol[cont_futbol].hp <= 0.0 && futbol[cont_futbol].flag_death)
+            {
+                futbol[cont_futbol].draw = false;
+            }
         }
     /*_______________________________________________________________________________________________
     /////////////////////////////////////////////DIBUJO//////////////////////////////////////////////
@@ -249,35 +295,42 @@ int main()
             al_draw_scaled_bitmap(interfaz, 0, 0, 485, 248, 0, 0, 275, 115, 0);
             al_draw_textf(text_hp, al_map_rgb(0, 0, 0), 155, 56, 0, "HP: %.0f", jg[0].vida);
             al_convert_mask_to_alpha(jg0_Idle, al_map_rgba(255, 0, 0, 255));
-            if(futbol[0].draw)
+            for (cont_futbol = 0; cont_futbol < 6; cont_futbol++)
             {
-                al_draw_bitmap_region(futbol_img, 0, 0, PXL_W, PXL_H, futbol[0].posx, futbol[0].posy, 0);
-                al_convert_mask_to_alpha(futbol_img, al_map_rgba(255, 0, 0, 255));
+                if (!futbol[cont_futbol].draw && (futbol[cont_futbol].hp <= 0.0))
+                {
+                    futbol[cont_futbol].posx = 0;
+                    futbol[cont_futbol].posy = 0;
+                }
+                else if (futbol[cont_futbol].draw && futbol[cont_futbol].hp)
+                {
+                    al_draw_bitmap_region(futbol_img, 0, 0, PXL_W, PXL_H, futbol[cont_futbol].posx, futbol[cont_futbol].posy, 0);
+                    al_convert_mask_to_alpha(futbol_img, al_map_rgba(255, 0, 0, 255));
+                }
             }
-            al_flip_display();
+            al_flip_display();        
         }
     }
     exit_game();
     return 0;
 }
-void mov_futbol(enemy_ &futbol, char fwall[SIZE][SIZE])
+void mov_futbol(enemy_ &en, char fwall[SIZE][SIZE])
 {
-    if (futbol.dir)
+    if (en.dir)
     {
-        futbol.posx += futbol.velx;
-        futbol.wall = coll_w(fwall, futbol.posx, futbol.posy, futbol.wall, futbol.dir);
-        if (futbol.wall)
-            futbol.dir = false;
+        en.posx += en.velx;
+        en.wall = coll_w(fwall, en.posx, en.posy, en.wall, en.dir);
+        if (en.wall)
+            en.dir = false;
     }
     else
     {
-        futbol.posx -= futbol.velx;
-        futbol.wall = coll_w(fwall, futbol.posx, futbol.posy, futbol.wall, futbol.dir);
-        if (futbol.wall)
-            futbol.dir = true;
+        en.posx -= en.velx;
+        en.wall = coll_w(fwall, en.posx, en.posy, en.wall, en.dir);
+        if (en.wall)
+            en.dir = true;
     }
 }
-
 bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true)
 {
     if(dir)
@@ -304,7 +357,6 @@ bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true)
     }
     return wall_true;
 }
-
 float damage(player_ &jg, enemy_ &en)
 {
     if (((jg.posx+PXL_CENTROW)>=en.posx) && 
@@ -324,7 +376,7 @@ float damage(player_ &jg, enemy_ &en)
     }
     return jg.vida;
 }
-int golpe(player_& jg, enemy_& en)
+float golpe(player_& jg, enemy_& en)
 {
     if (jg.dir)
     {
@@ -333,12 +385,10 @@ int golpe(player_& jg, enemy_& en)
             (en.posy >= jg.posy && en.posy <= jg.posy+PXL_H))
         {
             en.live = false;
-            printf("MUERE\t");
         }
         else
         {
             en.live = true;
-            printf("VIVO\t");
         }
     }
     else
@@ -348,18 +398,17 @@ int golpe(player_& jg, enemy_& en)
             (en.posy >= jg.posy && en.posy <= jg.posy + PXL_H))
         {
             en.live = false;
-            printf("MUERE\t");
         }
         else
         {
             en.live = true;
-            printf("VIVO\t");
         }
     }
     if (!en.live)
     {
         en.hp--;
-        printf("%d", en.hp);
+        printf("->%.3f\t", en.hp);
+        en.flag_death = true;
     }
     return en.hp;
 }
