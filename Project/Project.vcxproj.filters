@@ -61,11 +61,11 @@
   <ItemGroup>
     <Text Include="Archivos\Mapa_jefe.txt" />
     <Text Include="Archivos\Mapa_inicial.txt" />
-    <Text Include="Archivos\wall_enemy.txt" />
     <Text Include="x64\Debug\Project.Build.CppClean.log" />
     <Text Include="x64\Debug\Project.log" />
     <Text Include="x64\Debug\Project.vcxproj.FileListAbsolute.txt" />
     <Text Include="Archivos\ranking.txt" />
+    <Text Include="Archivos\wall_enemy.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Screen\history.bmp">

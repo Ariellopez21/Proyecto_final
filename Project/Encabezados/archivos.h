@@ -51,5 +51,14 @@ int ABRIR_MAPA(char mapa[SIZE][SIZE], int tipo)
 }
 int RANK(int puntos)
 {
-
+    FILE* frank;
+    int escribir = 0;
+    char trash = 'a';
+    frank = fopen("Archivos/ranking.txt", "w+");
+    if (frank == NULL)
+    {
+        printf("ERROR");
+        return 0;
+    }
+    return 0;
 }

@@ -7,7 +7,7 @@
 #define PXL_H 40				//PIXEL
 #define PXL_CENTROW (PXL_W/2)	//CENTRO PIXEL
 #define PXL_CENTROH (PXL_H/2)	//CENTRO PIXEL
-
+#define TIME 0.03333333334
 #define KEY_SEEN     1			//MEMORIA KEY
 #define KEY_RELEASED 2			//MEMORIA KEY
 
@@ -15,6 +15,7 @@
 #define VALOR_GRAVITY 22
 #define VEL_X0 12
 #define FASES 3
+#define CANT 3
 ALLEGRO_FONT* text_hp, *text_points, *text_exp;
 ALLEGRO_EVENT_QUEUE* queue;
 ALLEGRO_TIMER* timer, *timer_enemy;

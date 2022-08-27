@@ -2,20 +2,16 @@
 /*_______________________________________________________________________________________________
 /////////////////////////////////////ESTRUCTURAS-ENUMERACIONES///////////////////////////////////
 _________________________________________________________________________________________________*/
-enum animacion
-{
-    ann_quiet = 0, ann_up = 1, ann_right = 2, ann_left = 3, ann_punch = 4
-};          //IDEA...
 enum pos_enemy_futbol
 {
-    F1 = 0, F2 = 1, F3 = 2, F4 = 3, F5 = 4, F6 = 5, 
+    F1 = 0, F2 = 1, F3 = 2, F4 = 3, F5 = 4, F6 = 5,
     F1x = 288, F1y = 220,
     F2x = 264, F2y = 500,
     F3x = 108, F3y = 580,
     F4x = 450, F4y = 620,
     F5x = 100, F5y = 740,
     F6x = 400, F6y = 740
-};  
+};
 
 struct player_
 {
@@ -42,8 +38,8 @@ struct enemy_
     bool dir;
     float hp;
     bool draw;
-    bool flag_death;
-}futbol[6], basket[1], tennis[1], american[1], cannon[1]; //EN PROCESO...
+    int flag_death;
+}futbol[CANT]; //EN PROCESO...
 struct rank_
 {
     int puntos;
@@ -53,8 +49,11 @@ struct rank_
 ///////////////////////////////////////DECLARAR FUNCIONES////////////////////////////////////////
 _________________________________________________________________________________________________*/
 void VARIABLES_JUGADOR(player_& jg, int fase);
-void VARIABLES_ENEMIGOS_INICIAL(enemy_& en, int i);            //EN PROCESO...
-void VARIABLES_ENEMIGOS_RESET(enemy_& en, int i);
+void VARIABLES_ENEMIGOS_INICIAL(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int i);            //EN PROCESO...
+void VARIABLES_ENEMIGOS_RESET(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int i);
+void DRAW_MAP_SINCE_MAPA(char dibujado[SIZE][SIZE], ALLEGRO_BITMAP* sky, ALLEGRO_BITMAP* platform, ALLEGRO_BITMAP* dirt);
+int ABRIR_MAPA(char mapa[SIZE][SIZE], int tipo);
+int RANK(int puntos);
 bool coll_izq(char mapa[SIZE][SIZE], int x, int y, bool coll_left);
 bool coll_der(char mapa[SIZE][SIZE], int x, int y, bool coll_right);
 bool coll_arriba(char mapa[SIZE][SIZE], int x, int y, bool coll_up);
@@ -68,7 +67,7 @@ void VARIABLES_JUGADOR(player_ &jg, int fase)
     if (fase == 0)
     {
         jg.posx = WIDTH / 2;
-        jg.posy = HEIGHT - (PXL_H * 2);
+        jg.posy = HEIGHT - (PXL_H * 3);
         jg.velx = VEL_X0;
         jg.salto = 0;
         jg.gravity = VALOR_GRAVITY;
@@ -86,91 +85,64 @@ void VARIABLES_JUGADOR(player_ &jg, int fase)
 
     }
 }
+void VARIABLES_ENEMIGOS_INICIAL(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int i)
+{
+    int contaE=0, j, k;
 
-void VARIABLES_ENEMIGOS_INICIAL(enemy_ &en, int i)
-{
-    if (i == F1)
-    {
-        en.posx = F1x;
-        en.posy = F1y;
-    }
-    else if (i == F2)
-    {
-        en.posx = F2x;
-        en.posy = F2y;
-    }
-    else if (i == F3)
-    {
-        en.posx = F3x;
-        en.posy = F3y;
-    }
-    else if (i == F4)
-    {
-        en.posx = F4x;
-        en.posy = F4y;
-    }
-    else if (i == F5)
-    {
-        en.posx = F5x;
-        en.posy = F5y;
-    }
-    else if (i == F6)
-    {
-        en.posx = F6x;
-        en.posy = F6y;
-    }
-        en.velx = 1.0;
-        en.vely = 0.0;
-        en.wall = false;
-        en.live = true;
-        en.dmg = false;     //-1 por contacto
-        en.dir = true;  //derecha
-        en.hp = 0.0;
-        en.draw = true;
+        for (j = 0; j < SIZE; j++)
+            for (k = 0; k < SIZE; k++)
+                if (mapa[j][k] == 'E')
+                {
+                    if(contaE<CANT)     //que pasa si contaE es menor que CANT y quedan arreglos basura?
+                    {
+                        futbol[contaE].posx = k * PXL_W;
+                        futbol[contaE].posy = j * PXL_H;
+                        futbol[contaE].velx = 1.0;
+                        futbol[contaE].vely = 0.0;
+                        futbol[contaE].wall = false;
+                        futbol[contaE].live = true;     //PREGUNTAR: ESTO activado o no para que exista.
+                        futbol[contaE].dmg = false;     //-1 por contacto
+                        futbol[contaE].dir = true;  //derecha
+                        futbol[contaE].hp = 0.0;
+                        futbol[contaE].draw = true;
+                        mapa[j][k] = '0';
+                        contaE++;
+                    }
+                    else
+                    {
+                        mapa[j][k] = '0';
+                    }
+                }
 }
-void VARIABLES_ENEMIGOS_RESET(enemy_& en, int i)
+void VARIABLES_ENEMIGOS_RESET(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int contaE)
 {
-    if (i == F1)
-    {
-        en.posx = F1x;
-        en.posy = F1y;
-    }
-    else if (i == F2)
-    {
-        en.posx = F2x;
-        en.posy = F2y;
-    }
-    else if (i == F3)
-    {
-        en.posx = F3x;
-        en.posy = F3y;
-    }
-    else if (i == F4)
-    {
-        en.posx = F4x;
-        en.posy = F4y;
-    }
-    else if (i == F5)
-    {
-        en.posx = F5x;
-        en.posy = F5y;
-    }
-    else if (i == F6)
-    {
-        en.posx = F6x;
-        en.posy = F6y;
-    }
-    if(en.velx <20.0)
-        en.velx += 0.333334;
-    en.vely = 0.0;
-    en.wall = false;
-    en.live = true;
-    en.dmg = false;     //-1 por contacto
-    en.dir = true;  //derecha
-    if(en.hp < 10.0)
-        en.hp += futbol[0].velx;
-    en.draw = true;
-    en.flag_death = false;
+    ABRIR_MAPA(mapa, 1);
+    int j, k;
+    for (j = 0; j < SIZE; j++)
+        for (k = 0; k < SIZE; k++)
+            if (mapa[j][k] == 'E')
+            {
+                if(futbol[contaE].flag_death)       //Bandera: está muerto! o sea, vale 1
+                {
+                    if (contaE < CANT)     //que pasa si contaE es menor que CANT y quedan arreglos basura?
+                    {
+                        futbol[contaE].posx = k * PXL_W;
+                        futbol[contaE].posy = j * PXL_H;
+                        if (futbol[contaE].velx < 20.0)
+                            futbol[contaE].velx += 0.333334;
+                        futbol[contaE].vely = 0.0;
+                        futbol[contaE].wall = false;
+                        futbol[contaE].live = true;
+                        futbol[contaE].dmg = false;     //-1 por contacto
+                        futbol[contaE].dir = true;  //derecha
+                        if (futbol[contaE].hp < 10.0)
+                            futbol[contaE].hp += futbol[contaE].velx;
+                        futbol[contaE].draw = true;
+                        futbol[contaE].flag_death = 0;
+                    }
+                }
+                mapa[j][k] = '0';
+            }
 }
 
 bool coll_izq(char mapa[SIZE][SIZE], int x, int y, bool coll_left)
@@ -220,19 +192,12 @@ bool coll_arriba(char mapa[SIZE][SIZE], int x, int y, bool coll_up)
 }
 bool coll_abajo(char mapa[SIZE][SIZE], int x, int y, bool coll_down)
 {
-    if (
-        ((mapa[(y + PXL_H) / PXL_H][x / PXL_W] == 'p') ||
-            (mapa[(y + PXL_H) / PXL_H][x / PXL_W] == 'D'))
-        ||
-        ((mapa[(y + PXL_H) / PXL_H][(x + (SIZE / 2)) / PXL_W] == 'p') ||
-            (mapa[(y + PXL_H) / PXL_H][x / PXL_W] == 'D'))
-        ||
-        ((mapa[(y + PXL_H) / PXL_H][(x + SIZE) / PXL_W] == 'p') ||
-            (mapa[(y + PXL_H) / PXL_H][x / PXL_W] == 'D'))
-        )
-        return (coll_down = true);
+    if ((mapa[(y / PXL_H) + 1][x / PXL_W] == 'p') ||
+        (mapa[(y / PXL_H) + 1][x / PXL_W] == 'D'))
+        coll_down = true;
     else
-        return (coll_down = false);
+        coll_down = false;
+    return coll_down;
 }
 
 void exit_game()
