@@ -7,33 +7,31 @@
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_font.h>
 #include "Encabezados/variables_globales.h"
-#include "Encabezados/estructuras_funciones.h"
+#include "Encabezados/struct-prototypes.h"
 #include "Encabezados/archivos.h"
 #include "Encabezados/dibujado.h"
 #include "Encabezados/funciones_menu.h"
-void mov_futbol(enemy_& en, char mapa[SIZE][SIZE]);
-int golpe(player_ jg[FASES], enemy_ futbol[CANT], int points);
-bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true);
-float damage(player_& jg, enemy_& en);
+#include "Encabezados/player.h"
+#include "Encabezados/enemy.h"
+
 int main()
 {
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////DECLARAR VARIABLES////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    int x = 0, y = 0, P = 0, i = 0, j = 0, k = 0, tipo = 1, cont_futbol = 0, puntuacion = 0, exp = 0;
+    int x = 0, y = 0, i = 0, j = 0, tipo = 1, cont_futbol = 0, puntuacion = 0, exp = 0, recorrido=0;
     float tempo_enemy = -12.0, tempo_enemy_reset = 0.0, tiempo = 0.0;
     int mouseX = 10, mouseY = 10, MouseSpeed = 5;
-    char mapa[SIZE][SIZE], fwall[SIZE][SIZE];
+    char mapa[SIZE][SIZE];
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
-    bool flag_key_up_true = false, pausa = false, flag_key_p_true = false, flag_key_x_true = false,
+    int mantener_z = VALOR_INIT_SALTO;
+    bool pausa = false, flag_key_p_true = false, flag_key_x_true = false,
         coll_left = false, coll_right = false, coll_up = false, coll_down = false;
-    //struct enemy_ futbol[CANT];
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////INICIAR ARCHIVO///////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    tipo = ABRIR_MAPA(mapa, tipo);       //TIPO: decide si es mapa 1 o 2, se usará más adelante...
-    ABRIR_MAPA(fwall, 3);
+    tipo = ABRIR_MAPA(mapa, tipo);       //TIPO: decide que mapa leerá...
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////INICIAR ALLEGRO///////////////////////////////////////////
     _________________________________________________________________________________________________*/
@@ -61,9 +59,6 @@ int main()
     sky = al_load_bitmap("Sprites/Escenario/sky.bmp");
     dirt = al_load_bitmap("Sprites/Escenario/dirt.bmp");
     platform = al_load_bitmap("Sprites/Escenario/platform.bmp");
-    perfil = al_load_bitmap("Sprites/Escenario/profile.bmp");
-    pwup = al_load_bitmap("Sprites/Escenario/power_up.bmp");
-    bar = al_load_bitmap("Sprites/Escenario/bar.bmp");
     sky_scroll = al_load_bitmap("Sprites/Escenario/sky_scroll.png");
     interfaz = al_load_bitmap("Sprites/Escenario/Interfaz.png");
 
@@ -102,26 +97,20 @@ int main()
     _________________________________________________________________________________________________*/
     for (i = 0; i < FASES; i++)
         VARIABLES_JUGADOR(jg[i], i);
-    printf
-    (
-        "posx=%d, posy=%d, salto=%d, gravity=%d, exp=%d, vida=%f, lvlup=%f",
-        jg[0].posx, jg[0].posy, jg[0].salto, jg[0].gravity, jg[0].exp, jg[0].vida, jg[0].lvlup
-    );
-
     /*_______________________________________________________________________________________________
     ////////////////////////////////////INICIALIZAR ENEMIGOS/////////////////////////////////////////
     _________________________________________________________________________________________________*/
     srand(time(0));
     /*modificado profe....*/
-
-        VARIABLES_ENEMIGOS_INICIAL(mapa, futbol, i);
-        /*printf("\n%d - %d\t[HP:%.3f]", futbol[i].posx, futbol[i].posy, futbol[i].hp);*/
-  
+    VARIABLES_ENEMIGOS_INICIAL(mapa, futbol, i);        //INICIALIZAR ENEMIGOS
     /*________________________________________________________________________________________________
     /////////////////////////////////////////INICIA EL JUEGO//////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    //done = func_menu();
-    //func_instructions();
+    done = func_menu();
+    func_instructions();
+    reed_rank(rank,&recorrido);
+    show_rank(rank, recorrido);
+    save_rank(rank, recorrido);
     al_start_timer(timer);
     while (!done)
     {
@@ -138,15 +127,23 @@ int main()
             coll_down = coll_abajo(mapa, jg[0].posx, jg[0].posy, coll_down);
             if (coll_down)
             {
-                jg[0].gravity = 0;
-            }
-            else
-            {
-                jg[0].gravity = VALOR_GRAVITY;
+                mantener_z = VALOR_INIT_SALTO;
+                jg[0].posy -= jg[0].gravity;
+
             }
             if (!coll_up)
             {
-                if (key[ALLEGRO_KEY_Z] && !flag_key_up_true)
+                if (key[ALLEGRO_KEY_Z] && (mantener_z!=0))
+                {
+                    jg[0].posy -= jg[0].gravity;
+                    mantener_z--;
+                }
+                else
+                {
+                    jg[0].posy += jg[0].gravity;
+                }
+            }
+            /*if (key[ALLEGRO_KEY_Z] && !flag_key_up_true)
                 {
                     jg[0].posy = jg[0].posy - jg[0].salto;
                     if (jg[0].salto > 0)
@@ -166,12 +163,11 @@ int main()
                         jg[0].salto = VALOR_INIT_SALTO;
                         flag_key_up_true = false;
                     }
-                }
-            }
+                }*/
             else
             {
-                jg[0].salto = 0;
-                jg[0].posy = jg[0].posy + jg[0].gravity;
+                mantener_z = 0;
+                jg[0].posy += jg[0].gravity;
             }
             if (!coll_left)
             {
@@ -196,27 +192,34 @@ int main()
             /*_______________________________________________________________________________________________
             /////////////////////////////////////////////ACCIONES////////////////////////////////////////////
             _________________________________________________________________________________________________*/
+//PAUSA-----------------------------------------------------
             if (key[ALLEGRO_KEY_P] && !flag_key_p_true)
             {
                 flag_key_p_true = true;
                 printf("entra?\t");
             }
-            if (flag_key_p_true && !key[ALLEGRO_KEY_P])     //PAUSA
+            if (flag_key_p_true && !key[ALLEGRO_KEY_P])     
             {
                 done = func_pause(pausa);
                 flag_key_p_true = false;
                 printf("OUT?\t");
             }
-            if (key[ALLEGRO_KEY_X])                         //GOLPE
+//GOLPE-----------------------------------------------------
+            if (key[ALLEGRO_KEY_X])                         
             {
                     puntuacion = golpe(jg, futbol, puntuacion);
             }
-
-            if (jg[0].vida <= 0)                //MUERTE
+//MUERTE-----------------------------------------------------
+            if (jg[0].vida <= 0)    
+            {
                 done = true;
-
+            }
+//ESCAPE-----------------------------------------------------
             if (key[ALLEGRO_KEY_ESCAPE])
+            {
                 done = true;
+            }
+
             for (int i = 0; i < ALLEGRO_KEY_MAX; i++)
                 key[i] &= KEY_SEEN;
             break;
@@ -233,15 +236,17 @@ int main()
         /*_______________________________________________________________________________________________
         /////////////////////////////////////////////ENEMIGOS////////////////////////////////////////////
         _________________________________________________________________________________________________*/
-        tempo_enemy += 0.0333333333334;
-        tempo_enemy_reset += 0.0333333333334;
-        tiempo += 0.03333333334;
+        tempo_enemy += TIME;
+        tempo_enemy_reset += TIME;
+        tiempo += TIME;
+//PUNTUACIÓN POR TIEMPO-----------------------------------------------------
         if (tiempo >= 2.0)
         {
             puntuacion++;
             tiempo = 0.0;
         }
-        if (tempo_enemy >= -10.0 && tempo_enemy <= -5.0)         //GENERAR POR PRIMERA VEZ E INICIALIZAR ENEMIGOS
+//GENERAR POR PRIMERA VEZ-----------------------------------------------------
+        if (tempo_enemy >= -10.0 && tempo_enemy <= -5.0)         //GENERAR POR PRIMERA VEZ
         {
             for (cont_futbol = 0; cont_futbol < 6; cont_futbol++)
             {
@@ -254,7 +259,8 @@ int main()
                 }
             }
         }
-        if (tempo_enemy_reset >= 15.0 && tempo_enemy_reset <= 18.0)    //EN CASO DE MORIR - ACÁ REAPARECEN
+//REGENERACIÓN ENEMIGOS-----------------------------------------------------
+        if (tempo_enemy_reset >= 15.0 && tempo_enemy_reset <= 18.0)
         {
             for (cont_futbol = 0; cont_futbol < CANT; cont_futbol++)
             {
@@ -266,20 +272,25 @@ int main()
                 }
             }
         }
-        if (tempo_enemy_reset >= 20.0 && tempo_enemy >= 0.0)                           //TIEMPO PARA EL REINICIO DEL TEMPORIZADOR
+//RESET TIME-----------------------------------------------------
+        if (tempo_enemy_reset >= 20.0 && tempo_enemy >= 0.0)                           
         {
             printf("\nCERO\t");
             tempo_enemy = -15.0;
             tempo_enemy_reset = 0.0;
         }
+
+//MOVIMIENTO-----------------------------------------------------
         for (cont_futbol = 0; cont_futbol < CANT; cont_futbol++)
         {
             mov_futbol(futbol[cont_futbol], mapa);
         }
+//DAMAGE-----------------------------------------------------
         for (cont_futbol = 0; cont_futbol < CANT; cont_futbol++)
         {
             jg[0].vida = damage(jg[0], futbol[cont_futbol]);
         }
+//MUELTO-----------------------------------------------------
         for (cont_futbol = 0; cont_futbol < CANT; cont_futbol++)
         {
             if (futbol[cont_futbol].hp <= 0.0 && futbol[cont_futbol].flag_death)
@@ -295,7 +306,7 @@ int main()
             al_clear_to_color(al_map_rgb(0, 0, 0));
             DRAW_MAP_SINCE_MAPA(mapa, sky, platform, dirt);
 
-            if (jg[0].posy >= (HEIGHT - PXL_H))
+            if (jg[0].posy >= (HEIGHT - PXL_H))     //Condición: que no se escape de los límites del mapa.
                 jg[0].posy = HEIGHT - PXL_H;
 
             al_draw_bitmap_region(jg0_Idle, 0, 0, PXL_W, PXL_H, jg[0].posx, jg[0].posy, 0);
@@ -320,113 +331,6 @@ int main()
             al_flip_display();
         }
     }
-
     exit_game();
     return 0;
-}
-void mov_futbol(enemy_& en, char fwall[SIZE][SIZE])
-{
-    if (en.dir)
-    {
-        en.posx += en.velx;
-        en.wall = coll_w(fwall, en.posx, en.posy, en.wall, en.dir);
-        if (en.wall)
-            en.dir = false;
-    }
-    else
-    {
-        en.posx -= en.velx;
-        en.wall = coll_w(fwall, en.posx, en.posy, en.wall, en.dir);
-        if (en.wall)
-            en.dir = true;
-    }
-}
-bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true)
-{
-    if (dir)
-    {
-        if ((fwall[y / PXL_H][(x / PXL_W)+2] == 'W')
-            ||
-            (fwall[y / PXL_H][(x / PXL_W) + 2] == 'p')
-            ||
-            (fwall[(y + PXL_H) / PXL_H][(x / PXL_W)+2] == 'W'))
-            wall_true = true;
-        else
-            wall_true = false;
-    }
-    else
-    {
-        if ((fwall[y / PXL_H][(x - 1) / PXL_W] == 'W')
-            ||
-            (fwall[y / PXL_H][((x - 1) / PXL_W)] == 'p')
-            ||
-            (fwall[(y + PXL_H) / PXL_H][(x - 1) / PXL_W] == 'W'))
-            wall_true = true;
-        else
-            wall_true = false;
-    }
-    return wall_true;
-}
-float damage(player_& jg, enemy_& en)
-{
-    if (((jg.posx + PXL_CENTROW) >= en.posx) &&
-        ((jg.posx + PXL_CENTROW) <= en.posx + PXL_W) &&
-        ((jg.posy + PXL_CENTROH) >= en.posy) &&
-        ((jg.posy + PXL_CENTROH) <= en.posy + PXL_H))
-    {
-        en.dmg = true;
-    }
-    else
-    {
-        en.dmg = false;
-    }
-    if (en.dmg)
-    {
-        jg.vida--;
-    }
-    return jg.vida;
-}
-int golpe(player_ jg[FASES], enemy_ futbol[CANT], int points)
-{
-    int contaE;
-    for(contaE=0; contaE<CANT; contaE++)
-    {
-        if (jg[0].dir)
-        {
-            if ((futbol[contaE].posx >= jg[0].posx + PXL_W && futbol[contaE].posx <= jg[0].posx + PXL_W * 2)
-                &&
-                (futbol[contaE].posy >= jg[0].posy && futbol[contaE].posy <= jg[0].posy + PXL_H))
-            {
-                futbol[contaE].live = false;
-            }
-            else
-            {
-                futbol[contaE].live = true;
-            }
-        }
-        else
-        {
-            if ((futbol[contaE].posx >= jg[0].posx - PXL_W && futbol[contaE].posx <= jg[0].posx)
-                &&
-                (futbol[contaE].posy >= jg[0].posy && futbol[contaE].posy <= jg[0].posy + PXL_H))
-            {
-                futbol[contaE].live = false;
-            }
-            else
-            {
-                futbol[contaE].live = true;
-            }
-        }
-        if (!futbol[contaE].live)
-        {
-            futbol[contaE].hp--;
-            printf("->%.3f\t", futbol[contaE].hp);
-            if (futbol[contaE].hp <= 0.0)
-            {
-                points += 10;
-                futbol[contaE].flag_death = 1;
-            }
-        }
-    }
-    return points;
 }

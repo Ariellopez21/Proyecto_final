@@ -49,16 +49,48 @@ int ABRIR_MAPA(char mapa[SIZE][SIZE], int tipo)
     fclose(fmapa);
     return tipo;
 }
-int RANK(int puntos)
+
+void reed_rank(ranking rank[MAX_RANK], int* Nreal)
 {
     FILE* frank;
-    int escribir = 0;
-    char trash = 'a';
-    frank = fopen("Archivos/ranking.txt", "w+");
-    if (frank == NULL)
+    *Nreal = 0;
+    if ((frank = fopen("Archivos/rankingR.txt", "r")) == NULL)
     {
-        printf("ERROR");
-        return 0;
+        printf("Error al abrir archivo1!!");
+        return;
     }
-    return 0;
+    while (!feof(frank))
+    {
+        fscanf(frank, "%s", rank[*Nreal].name);
+        fscanf(frank, "%d", &rank[*Nreal].points);
+        (*Nreal)++;
+    }
+    fclose(frank);
+}
+void show_rank(ranking rank[MAX_RANK], int Nreal)
+{
+    int i;
+    for (i = 0; i < Nreal; i++)
+    {
+        printf("%s %d\t", rank[i].name, rank[i].points);
+        printf("\n");
+    }
+}
+void save_rank(ranking rank[MAX_RANK], int Nreal)
+{
+    FILE* frank;
+    int i;
+    if ((frank = fopen("Archivos/rankingR.txt", "w")) == NULL)
+    {
+        printf("Error al abrir archivo2!!");
+        return;
+    }
+    for (i = 0; i < Nreal; i++)
+    {
+        if (i < Nreal - 1)
+            fprintf(frank, "%s %d\n", rank[i].name, rank[i].points);
+        else
+            fprintf(frank, "%s %d", rank[i].name, rank[i].points);
+    }
+    fclose(frank);
 }

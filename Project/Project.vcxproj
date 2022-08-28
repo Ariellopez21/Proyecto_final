@@ -153,14 +153,16 @@
   <ItemGroup>
     <ClInclude Include="Encabezados\archivos.h" />
     <ClInclude Include="Encabezados\dibujado.h" />
-    <ClInclude Include="Encabezados\estructuras_funciones.h" />
+    <ClInclude Include="Encabezados\enemy.h" />
+    <ClInclude Include="Encabezados\player.h" />
+    <ClInclude Include="Encabezados\struct-prototypes.h" />
     <ClInclude Include="Encabezados\funciones_menu.h" />
     <ClInclude Include="Encabezados\variables_globales.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Archivos\Mapa_inicial.txt" />
     <Text Include="Archivos\Mapa_jefe.txt" />
-    <Text Include="Archivos\ranking.txt" />
+    <Text Include="Archivos\rankingR.txt" />
     <Text Include="Archivos\wall_enemy.txt" />
     <Text Include="x64\Debug\Project.Build.CppClean.log" />
     <Text Include="x64\Debug\Project.log" />

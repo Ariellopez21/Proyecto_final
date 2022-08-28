@@ -1,9 +1,4 @@
 #pragma once
-bool func_menu();
-bool func_rank();
-void func_instructions();
-bool func_pause(bool pausa);
-
 bool func_menu()
 {
     int mouseX = 10, mouseY = 10;
@@ -70,7 +65,6 @@ bool func_menu()
     }
     return done;
 }
-
 bool func_rank()
 {
     int mouseX = 10, mouseY = 10;
@@ -103,7 +97,6 @@ bool func_rank()
     }
     return done;
 }
-
 void func_instructions()
 {
     int mouseX = 10, mouseY = 10;
@@ -144,7 +137,6 @@ void func_instructions()
     }
     return;
 }
-
 bool func_pause(bool pausa)
 {
     int mouseX = 10, mouseY = 10;

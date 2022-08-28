@@ -2,20 +2,22 @@
 //TAMAÑOS:
 #define WIDTH 600				//WINDOW
 #define HEIGHT  800				//WINDOW
-#define SIZE 20					//ARCHIVO
-#define PXL_W 30				//PIXEL
-#define PXL_H 40				//PIXEL
-#define PXL_CENTROW (PXL_W/2)	//CENTRO PIXEL
-#define PXL_CENTROH (PXL_H/2)	//CENTRO PIXEL
+#define SIZE 20					//TAMAÑO ARCHIVO
+#define PXL_W 30				//TAMAÑO PIXEL
+#define PXL_H 40				//TAMAÑO PIXEL
+#define PXL_CENTROW (PXL_W/2)	//TAMAÑO CENTRO PIXEL
+#define PXL_CENTROH (PXL_H/2)	//TAMAÑO CENTRO PIXEL
 #define TIME 0.03333333334
 #define KEY_SEEN     1			//MEMORIA KEY
 #define KEY_RELEASED 2			//MEMORIA KEY
 
-#define VALOR_INIT_SALTO 17
-#define VALOR_GRAVITY 22
-#define VEL_X0 12
-#define FASES 3
-#define CANT 4
+#define VALOR_INIT_SALTO 7		//permite saltar
+#define VALOR_GRAVITY 20		//gravedad, actúa en todo momento.
+#define VEL_X0 10				//velocidad horizontal
+#define FASES 3					//fases del jugador
+#define CANT 4					//cantidad de enemigos: futbol
+#define LARGE 40
+#define MAX_RANK 10
 ALLEGRO_FONT* text_hp, *text_points, *text_exp;
 ALLEGRO_EVENT_QUEUE* queue;
 ALLEGRO_TIMER* timer, *timer_enemy;

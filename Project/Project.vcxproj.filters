@@ -48,13 +48,19 @@
     <ClInclude Include="Encabezados\dibujado.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Encabezados\estructuras_funciones.h">
+    <ClInclude Include="Encabezados\struct-prototypes.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Encabezados\funciones_menu.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Encabezados\variables_globales.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Encabezados\enemy.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Encabezados\player.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
@@ -64,7 +70,7 @@
     <Text Include="x64\Debug\Project.Build.CppClean.log" />
     <Text Include="x64\Debug\Project.log" />
     <Text Include="x64\Debug\Project.vcxproj.FileListAbsolute.txt" />
-    <Text Include="Archivos\ranking.txt" />
+    <Text Include="Archivos\rankingR.txt" />
     <Text Include="Archivos\wall_enemy.txt" />
   </ItemGroup>
   <ItemGroup>
