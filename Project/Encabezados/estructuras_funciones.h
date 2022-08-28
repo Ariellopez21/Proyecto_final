@@ -39,6 +39,7 @@ struct enemy_
     float hp;
     bool draw;
     int flag_death;
+    int E;
 }futbol[CANT]; //EN PROCESO...
 struct rank_
 {
@@ -93,7 +94,7 @@ void VARIABLES_ENEMIGOS_INICIAL(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int 
             for (k = 0; k < SIZE; k++)
                 if (mapa[j][k] == 'E')
                 {
-                    if(contaE<CANT)     //que pasa si contaE es menor que CANT y quedan arreglos basura?
+                    if(contaE<CANT)     
                     {
                         futbol[contaE].posx = k * PXL_W;
                         futbol[contaE].posy = j * PXL_H;
@@ -106,6 +107,7 @@ void VARIABLES_ENEMIGOS_INICIAL(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int 
                         futbol[contaE].hp = 0.0;
                         futbol[contaE].draw = true;
                         mapa[j][k] = '0';
+                        futbol[contaE].E = contaE;
                         contaE++;
                     }
                     else
@@ -117,32 +119,40 @@ void VARIABLES_ENEMIGOS_INICIAL(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int 
 void VARIABLES_ENEMIGOS_RESET(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int contaE)
 {
     ABRIR_MAPA(mapa, 1);
-    int j, k;
+    int j, k, pos=0;
     for (j = 0; j < SIZE; j++)
         for (k = 0; k < SIZE; k++)
             if (mapa[j][k] == 'E')
             {
-                if(futbol[contaE].flag_death)       //Bandera: está muerto! o sea, vale 1
+                if((futbol[contaE].E == pos))
                 {
-                    if (contaE < CANT)     //que pasa si contaE es menor que CANT y quedan arreglos basura?
+                    if (futbol[contaE].flag_death)       //Bandera: está muerto! o sea, vale 1
                     {
-                        futbol[contaE].posx = k * PXL_W;
-                        futbol[contaE].posy = j * PXL_H;
-                        if (futbol[contaE].velx < 20.0)
-                            futbol[contaE].velx += 0.333334;
-                        futbol[contaE].vely = 0.0;
-                        futbol[contaE].wall = false;
-                        futbol[contaE].live = true;
-                        futbol[contaE].dmg = false;     //-1 por contacto
-                        futbol[contaE].dir = true;  //derecha
-                        if (futbol[contaE].hp < 10.0)
-                            futbol[contaE].hp += futbol[contaE].velx;
-                        futbol[contaE].draw = true;
-                        futbol[contaE].flag_death = 0;
+                        if (contaE < CANT)     //que pasa si contaE es menor que CANT y quedan arreglos basura?
+                        {
+                            futbol[contaE].posx = k * PXL_W;
+                            futbol[contaE].posy = j * PXL_H;
+                            if (futbol[contaE].velx < 20.0)
+                                futbol[contaE].velx += 0.333334;
+                            futbol[contaE].vely = 0.0;
+                            futbol[contaE].wall = false;
+                            futbol[contaE].live = true;
+                            futbol[contaE].dmg = false;     //-1 por contacto
+                            futbol[contaE].dir = true;  //derecha
+                            if (futbol[contaE].hp < 10.0)
+                                futbol[contaE].hp += futbol[contaE].velx;
+                            futbol[contaE].draw = true;
+                            futbol[contaE].flag_death = 0;
+                            mapa[j][k] = '0';
+                        }
                     }
                 }
-                mapa[j][k] = '0';
-            }
+                else
+                {
+                    mapa[j][k] = '0';
+                }
+                pos++;
+            }         
 }
 
 bool coll_izq(char mapa[SIZE][SIZE], int x, int y, bool coll_left)

@@ -12,7 +12,7 @@ void DRAW_MAP_SINCE_MAPA
     {
         for (j = 0; j < SIZE; j++)
         {
-            if (dibujado[i][j] == '0')
+            if (dibujado[i][j] == '0' || dibujado[i][j] == 'W')
             {
                 al_draw_bitmap(sky, j * PXL_W, i * PXL_H, 0);
             }

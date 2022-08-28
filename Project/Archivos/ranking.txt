@@ -1,2 +1,10 @@
-Ariel Lopez
-5000
+ARREGLAR:
+-Posición del jg dsp de saltar.
+
+IMPLEMENTAR:
+-Un par de enemigos más.
+-Ranking.
+
+QUIZÁ:
+-fase 2 del jg.
+-Puntuación para exp.

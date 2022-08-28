@@ -160,8 +160,8 @@ int main()
                 else
                 {
                     jg[0].posy = jg[0].posy + jg[0].gravity;
-                    if ((mapa[(jg[0].posy + PXL_H) / PXL_H][jg[0].posx / PXL_W] == 'p') ||
-                        (mapa[(jg[0].posy + PXL_H) / PXL_H][jg[0].posx / PXL_W] == 'D'))
+                    if ((mapa[((jg[0].posy) / PXL_H)+1][jg[0].posx / PXL_W] == 'p') ||
+                        (mapa[((jg[0].posy) / PXL_H)+1][jg[0].posx / PXL_W] == 'D'))
                     {
                         jg[0].salto = VALOR_INIT_SALTO;
                         flag_key_up_true = false;
@@ -274,7 +274,7 @@ int main()
         }
         for (cont_futbol = 0; cont_futbol < CANT; cont_futbol++)
         {
-            mov_futbol(futbol[cont_futbol], fwall);
+            mov_futbol(futbol[cont_futbol], mapa);
         }
         for (cont_futbol = 0; cont_futbol < CANT; cont_futbol++)
         {
@@ -345,11 +345,11 @@ bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true)
 {
     if (dir)
     {
-        if ((fwall[y / PXL_H][(x + PXL_W * 2) / PXL_W] == 'W')
+        if ((fwall[y / PXL_H][(x / PXL_W)+2] == 'W')
             ||
-            (fwall[(y + (PXL_H / 2)) / PXL_H][(x + PXL_W * 2) / PXL_W] == 'W')
+            (fwall[y / PXL_H][(x / PXL_W) + 2] == 'p')
             ||
-            (fwall[(y + PXL_H) / PXL_H][(x + PXL_W * 2) / PXL_W] == 'W'))
+            (fwall[(y + PXL_H) / PXL_H][(x / PXL_W)+2] == 'W'))
             wall_true = true;
         else
             wall_true = false;
@@ -358,7 +358,7 @@ bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true)
     {
         if ((fwall[y / PXL_H][(x - 1) / PXL_W] == 'W')
             ||
-            (fwall[(y + (PXL_H / 2)) / PXL_H][(x - 1) / PXL_W] == 'W')
+            (fwall[y / PXL_H][((x - 1) / PXL_W)] == 'p')
             ||
             (fwall[(y + PXL_H) / PXL_H][(x - 1) / PXL_W] == 'W'))
             wall_true = true;
