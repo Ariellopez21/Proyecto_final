@@ -19,7 +19,7 @@ int main()
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////DECLARAR VARIABLES////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    int x = 0, y = 0, i = 0, j = 0, tipo = 1, cont_futbol = 0, puntuacion = 0, exp = 0, recorrido=0;
+    int x = 0, y = 0, i = 0, j = 0, tipo = 2, cont_futbol = 0, puntuacion = 0, exp = 0, recorrido=0;
     float tempo_enemy = -12.0, tempo_enemy_reset = 0.0, tiempo = 0.0;
     int mouseX = 10, mouseY = 10, MouseSpeed = 5;
     char mapa[SIZE][SIZE];
@@ -106,11 +106,10 @@ int main()
     /*________________________________________________________________________________________________
     /////////////////////////////////////////INICIA EL JUEGO//////////////////////////////////////////
     _________________________________________________________________________________________________*/
+    reed_rank(rank, &recorrido);        //Lee el ranking
+    show_rank(rank, recorrido);         //Corroborar que el ranking esté bien.
     done = func_menu();
     func_instructions();
-    reed_rank(rank,&recorrido);
-    show_rank(rank, recorrido);
-    save_rank(rank, recorrido);
     al_start_timer(timer);
     while (!done)
     {
@@ -267,7 +266,7 @@ int main()
                 if (futbol[cont_futbol].posx == 0.0 && futbol[cont_futbol].posy == 0.0 && futbol[cont_futbol].flag_death)
                 {
                     printf("RESET\t");
-                    VARIABLES_ENEMIGOS_RESET(mapa, futbol, cont_futbol);
+                    VARIABLES_ENEMIGOS_RESET(mapa, futbol, cont_futbol, tipo);
                     printf("VEL:[%.3f]\t HP:[%.3f] --- X:[%d]; Y:[%d]\n", futbol[cont_futbol].velx, futbol[cont_futbol].hp, futbol[cont_futbol].posx, futbol[cont_futbol].posy);
                 }
             }
@@ -330,6 +329,11 @@ int main()
             }
             al_flip_display();
         }
+    }
+    if(puntuacion>0)
+    {
+        printf("GAME OVER\n");
+        save_rank(rank, recorrido);             //Ingresar nombre, y puntuación al ranking.
     }
     exit_game();
     return 0;

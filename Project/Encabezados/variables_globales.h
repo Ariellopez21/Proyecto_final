@@ -15,10 +15,11 @@
 #define VALOR_GRAVITY 20		//gravedad, actúa en todo momento.
 #define VEL_X0 10				//velocidad horizontal
 #define FASES 3					//fases del jugador
-#define CANT 4					//cantidad de enemigos: futbol
+#define CANT 10					//cantidad de enemigos: futbol
 #define LARGE 40
 #define MAX_RANK 10
-ALLEGRO_FONT* text_hp, *text_points, *text_exp;
+#define MAX_LINE 40
+ALLEGRO_FONT* text_hp, *text_points, *text_exp, *ranking_bitmap;
 ALLEGRO_EVENT_QUEUE* queue;
 ALLEGRO_TIMER* timer, *timer_enemy;
 ALLEGRO_DISPLAY* disp;

@@ -72,6 +72,11 @@
     <Text Include="x64\Debug\Project.vcxproj.FileListAbsolute.txt" />
     <Text Include="Archivos\rankingR.txt" />
     <Text Include="Archivos\wall_enemy.txt" />
+    <Text Include="Archivos\Map1.txt" />
+    <Text Include="Archivos\Map2.txt" />
+    <Text Include="Archivos\Map3.txt" />
+    <Text Include="Archivos\Map4.txt" />
+    <Text Include="Archivos\Map5.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Screen\history.bmp">

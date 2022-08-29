@@ -30,9 +30,9 @@ void VARIABLES_ENEMIGOS_INICIAL(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int 
                 }
             }
 }
-void VARIABLES_ENEMIGOS_RESET(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int contaE)
+void VARIABLES_ENEMIGOS_RESET(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int contaE, int tipo)
 {
-    ABRIR_MAPA(mapa, 1);
+    ABRIR_MAPA(mapa, tipo);
     int j, k, pos = 0;
     for (j = 0; j < SIZE; j++)
         for (k = 0; k < SIZE; k++)

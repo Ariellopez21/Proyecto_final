@@ -42,7 +42,7 @@ struct ranking rank[MAX_RANK];
 _________________________________________________________________________________________________*/
 //FUNCIONES PARA ENEMIGOS:
 void VARIABLES_ENEMIGOS_INICIAL(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int i);
-void VARIABLES_ENEMIGOS_RESET(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int i);
+void VARIABLES_ENEMIGOS_RESET(char mapa[SIZE][SIZE], enemy_ futbol[CANT], int i, int tipo);
 void mov_futbol(enemy_& en, char mapa[SIZE][SIZE]);
 int golpe(player_ jg[FASES], enemy_ futbol[CANT], int points);
 bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true);
@@ -50,7 +50,6 @@ float damage(player_& jg, enemy_& en);
 
 //FUNCIONES LECTURA ARCHIVO:
 int ABRIR_MAPA(char mapa[SIZE][SIZE], int tipo);
-int RANK(int puntos);
 
 //FUNCIONES PARA JUGADOR:
 void VARIABLES_JUGADOR(player_& jg, int fase);

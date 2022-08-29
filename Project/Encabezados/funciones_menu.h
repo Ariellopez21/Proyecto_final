@@ -67,7 +67,8 @@ bool func_menu()
 }
 bool func_rank()
 {
-    int mouseX = 10, mouseY = 10;
+    ranking_bitmap = al_create_builtin_font();
+    int mouseX = 10, mouseY = 10, i=0;
     al_install_mouse();
     al_start_timer(timer);
     while (!done)
@@ -92,6 +93,27 @@ bool func_rank()
         {
             al_clear_to_color(al_map_rgb(0, 0, 0));
             al_draw_scaled_bitmap(menu_ranking, 0, 0, 300, 400, 0, 0, WIDTH, HEIGHT, 0);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 160, 155, 0, "%s", &rank[0].name);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 160, 220, 0, "%s", &rank[1].name);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 160, 285, 0, "%s", &rank[2].name);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 160, 350, 0, "%s", &rank[3].name);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 160, 425, 0, "%s", &rank[4].name);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 160, 490, 0, "%s", &rank[5].name);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 160, 555, 0, "%s", &rank[6].name);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 160, 625, 0, "%s", &rank[7].name);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 160, 690, 0, "%s", &rank[8].name);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 160, 760, 0, "%s", &rank[9].name);
+
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 510, 155, 0, "%d", rank[0].points);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 510, 220, 0, "%d", rank[1].points);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 510, 285, 0, "%d", rank[2].points);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 510, 350, 0, "%d", rank[3].points);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 510, 425, 0, "%d", rank[4].points);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 510, 490, 0, "%d", rank[5].points);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 510, 555, 0, "%d", rank[6].points);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 510, 625, 0, "%d", rank[7].points);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 510, 690, 0, "%d", rank[8].points);
+            al_draw_textf(ranking_bitmap, al_map_rgb(255, 255, 255), 510, 760, 0, "%d", rank[9].points);
             al_flip_display();
         }
     }

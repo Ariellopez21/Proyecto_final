@@ -160,6 +160,11 @@
     <ClInclude Include="Encabezados\variables_globales.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Archivos\Map1.txt" />
+    <Text Include="Archivos\Map2.txt" />
+    <Text Include="Archivos\Map3.txt" />
+    <Text Include="Archivos\Map4.txt" />
+    <Text Include="Archivos\Map5.txt" />
     <Text Include="Archivos\Mapa_inicial.txt" />
     <Text Include="Archivos\Mapa_jefe.txt" />
     <Text Include="Archivos\rankingR.txt" />
