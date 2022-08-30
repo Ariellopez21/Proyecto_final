@@ -77,6 +77,8 @@
     <Allegro_AddonMemfile>true</Allegro_AddonMemfile>
     <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
     <Allegro_AddonTTF>true</Allegro_AddonTTF>
+    <Allegro_AddonAudio>true</Allegro_AddonAudio>
+    <Allegro_AddonAcodec>true</Allegro_AddonAcodec>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Allegro_AddonImage>true</Allegro_AddonImage>
@@ -85,6 +87,8 @@
     <Allegro_AddonMemfile>true</Allegro_AddonMemfile>
     <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
     <Allegro_AddonTTF>true</Allegro_AddonTTF>
+    <Allegro_AddonAudio>true</Allegro_AddonAudio>
+    <Allegro_AddonAcodec>true</Allegro_AddonAcodec>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -143,6 +147,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="OST\gameover.ogg" />
+    <None Include="OST\menuost.ogg" />
+    <None Include="OST\playgame.ogg" />
+    <None Include="OST\punch_sound.ogg" />
     <None Include="packages.config" />
     <None Include="x64\Debug\Project.exe.recipe" />
     <None Include="x64\Debug\Project.ilk" />
@@ -175,6 +183,7 @@
     <Text Include="x64\Debug\Project.vcxproj.FileListAbsolute.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Screen\gameover_screen.png" />
     <Image Include="Screen\history.bmp" />
     <Image Include="Screen\instructions0.bmp" />
     <Image Include="Screen\instructions1.bmp" />
@@ -213,6 +222,7 @@
     <Object Include="x64\Debug\principal.obj" />
   </ItemGroup>
   <ItemGroup>
+    <Font Include="Font\final_font.ttf" />
     <Font Include="Font\sanes.TTF" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

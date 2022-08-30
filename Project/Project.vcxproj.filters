@@ -35,6 +35,10 @@
     <None Include="x64\Debug\Project.ilk" />
     <None Include="x64\Debug\vc143.idb" />
     <None Include="x64\Debug\vc143.pdb" />
+    <None Include="OST\menuost.ogg" />
+    <None Include="OST\punch_sound.ogg" />
+    <None Include="OST\playgame.ogg" />
+    <None Include="OST\gameover.ogg" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="principal.cpp">
@@ -177,11 +181,15 @@
     <Image Include="Sprites\Escenario\Interfaz.png">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="Screen\gameover_screen.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Object Include="x64\Debug\principal.obj" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Font\sanes.TTF" />
+    <Font Include="Font\final_font.ttf" />
   </ItemGroup>
 </Project>

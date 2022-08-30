@@ -156,6 +156,7 @@ int golpe(player_ jg[FASES], enemy_ futbol[CANT], int points)
         }
         if (!futbol[contaE].live)
         {
+            al_play_sample(SOUND, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
             futbol[contaE].hp--;
             printf("->%.3f\t", futbol[contaE].hp);
             if (futbol[contaE].hp <= 0.0)

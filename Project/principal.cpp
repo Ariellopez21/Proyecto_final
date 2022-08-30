@@ -3,6 +3,8 @@
 #include <string.h>
 #include <time.h>
 #include <allegro5/allegro5.h>
+#include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_font.h>
@@ -15,14 +17,12 @@
 #include "Encabezados/funciones_menu.h"
 #include "Encabezados/player.h"
 #include "Encabezados/enemy.h"
-
-
 int main()
 {
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////DECLARAR VARIABLES////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    int x = 0, y = 0, i = 0, j = 0, tipo = 3, cont_futbol = 0, puntuacion = 0, exp = 0, recorrido = 0;
+    int x = 0, y = 0, i = 0, j = 0, tipo = 1, cont_futbol = 0, puntuacion = 0, exp = 0, recorrido = 0;
     float tempo_enemy = -12.0, tempo_enemy_reset = 0.0, tiempo = 0.0;
     int mouseX = 10, mouseY = 10, MouseSpeed = 5;
     char mapa[SIZE][SIZE];
@@ -45,13 +45,35 @@ int main()
     al_install_mouse();
     al_init_font_addon();
     al_init_ttf_addon();
+    al_init_acodec_addon();
+    al_install_audio();
+
     text_hp = al_create_builtin_font();
     text_points = al_create_builtin_font();
     text_exp = al_create_builtin_font();
+    dead_text = al_load_font("Font/final_font.TTF", 25, 0);
     timer = al_create_timer(1.0 / 30.0);
     timer_enemy = al_create_timer(1.0);
     queue = al_create_event_queue();
     disp = al_create_display(WIDTH, HEIGHT);
+
+    al_reserve_samples(10);
+    SOUND = al_load_sample("OST/punch_sound.ogg");
+
+    OST_MENUSAMPLE = al_load_sample("OST/menuost.ogg");
+    OST_MENUINTANCE = al_create_sample_instance(OST_MENUSAMPLE);
+    al_set_sample_instance_playmode(OST_MENUINTANCE, ALLEGRO_PLAYMODE_LOOP);
+    al_attach_sample_instance_to_mixer(OST_MENUINTANCE, al_get_default_mixer());
+
+    OST_GAMESAMPLE = al_load_sample("OST/playgame.ogg");
+    OST_GAMEINSTANCE = al_create_sample_instance(OST_GAMESAMPLE);
+    al_set_sample_instance_playmode(OST_GAMEINSTANCE, ALLEGRO_PLAYMODE_LOOP);
+    al_attach_sample_instance_to_mixer(OST_GAMEINSTANCE, al_get_default_mixer());
+
+    OST_OVERSAMPLE = al_load_sample("OST/gameover.ogg");
+    OST_OVERINSTANCE = al_create_sample_instance(OST_OVERSAMPLE);
+    al_set_sample_instance_playmode(OST_OVERINSTANCE, ALLEGRO_PLAYMODE_LOOP);
+    al_attach_sample_instance_to_mixer(OST_OVERINSTANCE, al_get_default_mixer());
 
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));
@@ -68,16 +90,6 @@ int main()
     interfaz = al_load_bitmap("Sprites/Escenario/Interfaz.png");
 
     jg0_Idle = al_load_bitmap("Sprites/Jugador/jg0_Idle_Walk.bmp");
-    jg0_Walk = al_load_bitmap("Sprites/Jugador/jg0_Idle_Walk.bmp");
-    jg0_Jump = al_load_bitmap("Sprites/Jugador/jg0_Jump.bmp");
-    jg0_Punch = al_load_bitmap("Sprites/Jugador/jg0_Punch.bmp");
-    jg0_Damage = al_load_bitmap("Sprites/Jugador/jg0_Damage.bmp");
-
-    jg1_Idle = al_load_bitmap("Sprites/Jugador/jg1_Idle_Walk.bmp");
-    jg1_Walk = al_load_bitmap("Sprites/Jugador/jg1_Idle_Walk.bmp");
-    jg1_Jump = al_load_bitmap("Sprites/Jugador/jg1_Jump.bmp");
-    jg1_Punch = al_load_bitmap("Sprites/Jugador/jg1_Punch.bmp");
-    jg1_Damage = al_load_bitmap("Sprites/Jugador/jg1_Damage.bmp");
 
     futbol_img = al_load_bitmap("Sprites/Enemigos/futbol.png");
     basket_img = al_load_bitmap("Sprites/Enemigos/basketpng.png");
@@ -97,6 +109,7 @@ int main()
     pause = al_load_bitmap("Screen/pause_0.bmp");                    //MANTENER RELACIÓN DE ASPECTO
     pause1 = al_load_bitmap("Screen/pause_1.png");
     pause2 = al_load_bitmap("Screen/pause_2.png");
+    go_screen = al_load_bitmap("Screen/gameover_screen.png");
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////INICIALIZAR JUGADOR///////////////////////////////////////
     _________________________________________________________________________________________________*/
@@ -115,7 +128,10 @@ int main()
     show_rank(rank, recorrido);         //Corroborar que el ranking esté bien.
     done = func_menu(rank);
     func_instructions();
+    al_destroy_sample_instance(OST_MENUINTANCE);
+    al_destroy_sample(OST_MENUSAMPLE);
     al_start_timer(timer);
+    al_play_sample_instance(OST_GAMEINSTANCE);
     while (!done)
     {
         al_wait_for_event(queue, &event);
@@ -336,12 +352,39 @@ int main()
             al_flip_display();
         }
     }
+    al_destroy_sample_instance(OST_GAMEINSTANCE);
+    al_destroy_sample(OST_GAMESAMPLE);
+    al_play_sample_instance(OST_OVERINSTANCE);
     if(puntuacion>0)
     {
-        printf("GAME OVER\n");
+        while (done)
+        {
+            al_wait_for_event(queue, &event);
+            switch (event.type)
+            {
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                done = false;
+                break;
+            case ALLEGRO_KEY_ENTER:
+                done = false;
+                break;
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                break;
+            }
+            if (al_is_event_queue_empty(queue) && (done))
+            {
+                al_clear_to_color(al_map_rgb(0, 0, 0));
+                al_draw_scaled_bitmap(go_screen, 0, 0, 300, 400, 0, 0, WIDTH, HEIGHT, 0);
+                //al_draw_text(dead_text, al_map_rgb(255, 255, 255), 200, 200, 0, "Ariellopez");
+                //al_draw_text(dead_text, al_map_rgb(255, 255, 255), 200, 200, 0, "Ariellopez");
+                al_flip_display();
+            }
+        }
         comparacion_rank(rank, puntuacion);
     }
+    al_destroy_sample_instance(OST_OVERINSTANCE);
+    al_destroy_sample(OST_OVERSAMPLE);
+
     exit_game();
     return 0;
-
 }

@@ -19,7 +19,7 @@
 #define LARGE 40
 #define MAX_RANK 11
 #define MAX_LINE 40
-ALLEGRO_FONT* text_hp, *text_points, *text_exp, *ranking_bitmap, * escribir_name, *escanear_name;
+ALLEGRO_FONT* text_hp, *text_points, *text_exp, *ranking_bitmap, * escribir_name, *escanear_name, *dead_text;
 ALLEGRO_EVENT_QUEUE* queue;
 ALLEGRO_TIMER* timer, *timer_enemy;
 ALLEGRO_DISPLAY* disp;
@@ -33,4 +33,7 @@ ALLEGRO_BITMAP
 * menu_history, * menu_instructions, * menu_instructions1,					//MENU -> JUGAR
 * menu_ranking,																//MENU -> RANKING
 * pause, * pause1, * pause2,												//JUEGO -> PAUSA 
-* futbol_img, * basket_img, * tennis_img;									//ENEMIGOS
+* futbol_img, * basket_img, * tennis_img,									//ENEMIGOS
+*go_screen;																	//Game Over.
+ALLEGRO_SAMPLE* SOUND=NULL, *OST_MENUSAMPLE=NULL, *OST_GAMESAMPLE=NULL, *OST_OVERSAMPLE=NULL;
+ALLEGRO_SAMPLE_INSTANCE* OST_MENUINTANCE=NULL, *OST_GAMEINSTANCE=NULL, * OST_OVERINSTANCE=NULL;

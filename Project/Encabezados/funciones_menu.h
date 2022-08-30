@@ -1,6 +1,7 @@
 #pragma once
 bool func_menu(ranking rank[MAX_RANK])
 {
+    al_play_sample_instance(OST_MENUINTANCE);
     int mouseX = 10, mouseY = 10;
     bool click[] = { 0, 0, 0, 0 };
     click[0] = true;
