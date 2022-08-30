@@ -90,14 +90,14 @@ bool coll_w(char fwall[SIZE][SIZE], int x, int y, bool dir, bool wall_true)
 {
     if (dir)
     {
-        if (fwall[(y / PXL_H)+1][(x / PXL_W) + 1] != 'p')
+        if ((fwall[(y / PXL_H)][(x / PXL_W) + 2] == 'W') || (fwall[(y / PXL_H)][(x / PXL_W) + 2] == 'p'))
             wall_true = true;
         else
             wall_true = false;
     }
     else
     {
-        if (fwall[(y / PXL_H) + 1][(x - 1) / PXL_W] != 'p')
+        if ((fwall[(y / PXL_H)][(x - 1) / PXL_W] == 'W') || (fwall[(y / PXL_H)][(x - 1) / PXL_W] == 'p'))
             wall_true = true;
         else
             wall_true = false;

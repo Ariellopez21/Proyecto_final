@@ -110,3 +110,29 @@ void save_rank(ranking rank[MAX_RANK], int Nreal)           //Introduzca su nomb
     }
     fclose(frank);
 }
+void comparacion_rank(int puntuacion, char nuevo_ingreso);
+
+void comparacion_rank(int puntuacion, char nuevo_ingreso)
+{
+    int maximo = MAX_RANK-1, auxP;
+    char auxN[MAX_LINE];
+    bool mayor = true;
+    while (mayor)
+    {
+        if (puntuacion > rank[maximo].points)
+        {
+            printf("posicion %d: TU:%d > EL:%d\n", maximo - 1, puntuacion, rank[maximo].points);
+            auxP = rank[maximo].points;
+            rank[maximo].points = puntuacion;
+            rank[maximo + 1].points = auxP;
+            strcpy(auxN, rank[maximo].name);
+            strcpy(rank[maximo].name, &nuevo_ingreso);
+            strcpy(rank[maximo + 1].name, auxN);
+        }
+        else if (puntuacion < rank[maximo].points)
+            mayor = false;
+        maximo--;
+        if (maximo < 0)
+            mayor = false;
+    }
+}

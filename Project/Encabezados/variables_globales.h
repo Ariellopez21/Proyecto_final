@@ -17,9 +17,9 @@
 #define FASES 3					//fases del jugador
 #define CANT 10					//cantidad de enemigos: futbol
 #define LARGE 40
-#define MAX_RANK 10
+#define MAX_RANK 11
 #define MAX_LINE 40
-ALLEGRO_FONT* text_hp, *text_points, *text_exp, *ranking_bitmap;
+ALLEGRO_FONT* text_hp, *text_points, *text_exp, *ranking_bitmap, * escribir_name, *escanear_name;
 ALLEGRO_EVENT_QUEUE* queue;
 ALLEGRO_TIMER* timer, *timer_enemy;
 ALLEGRO_DISPLAY* disp;

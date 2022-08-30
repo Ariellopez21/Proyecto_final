@@ -6,6 +6,7 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_primitives.h>
 #include "Encabezados/variables_globales.h"
 #include "Encabezados/struct-prototypes.h"
 #include "Encabezados/archivos.h"
@@ -14,15 +15,16 @@
 #include "Encabezados/player.h"
 #include "Encabezados/enemy.h"
 
+
 int main()
 {
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////DECLARAR VARIABLES////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    int x = 0, y = 0, i = 0, j = 0, tipo = 2, cont_futbol = 0, puntuacion = 0, exp = 0, recorrido=0;
+    int x = 0, y = 0, i = 0, j = 0, tipo = 5, cont_futbol = 0, puntuacion = 0, exp = 0, recorrido = 0;
     float tempo_enemy = -12.0, tempo_enemy_reset = 0.0, tiempo = 0.0;
     int mouseX = 10, mouseY = 10, MouseSpeed = 5;
-    char mapa[SIZE][SIZE];
+    char mapa[SIZE][SIZE], nuevo_ingreso[MAX_LINE];
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
     int mantener_z = VALOR_INIT_SALTO;
@@ -39,10 +41,12 @@ int main()
     al_init_image_addon();
     al_install_keyboard();
     al_install_mouse();
-
+    al_init_primitives_addon();
     text_hp = al_create_builtin_font();
     text_points = al_create_builtin_font();
     text_exp = al_create_builtin_font();
+    escribir_name = al_create_builtin_font();
+    escanear_name = al_create_builtin_font();
     timer = al_create_timer(1.0 / 30.0);
     timer_enemy = al_create_timer(1.0);
     queue = al_create_event_queue();
@@ -132,7 +136,7 @@ int main()
             }
             if (!coll_up)
             {
-                if (key[ALLEGRO_KEY_Z] && (mantener_z!=0))
+                if (key[ALLEGRO_KEY_Z] && (mantener_z != 0))
                 {
                     jg[0].posy -= jg[0].gravity;
                     mantener_z--;
@@ -191,29 +195,29 @@ int main()
             /*_______________________________________________________________________________________________
             /////////////////////////////////////////////ACCIONES////////////////////////////////////////////
             _________________________________________________________________________________________________*/
-//PAUSA-----------------------------------------------------
+            //PAUSA-----------------------------------------------------
             if (key[ALLEGRO_KEY_P] && !flag_key_p_true)
             {
                 flag_key_p_true = true;
                 printf("entra?\t");
             }
-            if (flag_key_p_true && !key[ALLEGRO_KEY_P])     
+            if (flag_key_p_true && !key[ALLEGRO_KEY_P])
             {
                 done = func_pause(pausa);
                 flag_key_p_true = false;
                 printf("OUT?\t");
             }
-//GOLPE-----------------------------------------------------
-            if (key[ALLEGRO_KEY_X])                         
+            //GOLPE-----------------------------------------------------
+            if (key[ALLEGRO_KEY_X])
             {
-                    puntuacion = golpe(jg, futbol, puntuacion);
+                puntuacion = golpe(jg, futbol, puntuacion);
             }
-//MUERTE-----------------------------------------------------
-            if (jg[0].vida <= 0)    
+            //MUERTE-----------------------------------------------------
+            if (jg[0].vida <= 0)
             {
                 done = true;
             }
-//ESCAPE-----------------------------------------------------
+            //ESCAPE-----------------------------------------------------
             if (key[ALLEGRO_KEY_ESCAPE])
             {
                 done = true;
@@ -238,13 +242,13 @@ int main()
         tempo_enemy += TIME;
         tempo_enemy_reset += TIME;
         tiempo += TIME;
-//PUNTUACIÓN POR TIEMPO-----------------------------------------------------
+        //PUNTUACIÓN POR TIEMPO-----------------------------------------------------
         if (tiempo >= 2.0)
         {
             puntuacion++;
             tiempo = 0.0;
         }
-//GENERAR POR PRIMERA VEZ-----------------------------------------------------
+        //GENERAR POR PRIMERA VEZ-----------------------------------------------------
         if (tempo_enemy >= -10.0 && tempo_enemy <= -5.0)         //GENERAR POR PRIMERA VEZ
         {
             for (cont_futbol = 0; cont_futbol < 6; cont_futbol++)
@@ -258,7 +262,7 @@ int main()
                 }
             }
         }
-//REGENERACIÓN ENEMIGOS-----------------------------------------------------
+        //REGENERACIÓN ENEMIGOS-----------------------------------------------------
         if (tempo_enemy_reset >= 15.0 && tempo_enemy_reset <= 18.0)
         {
             for (cont_futbol = 0; cont_futbol < CANT; cont_futbol++)
@@ -271,25 +275,25 @@ int main()
                 }
             }
         }
-//RESET TIME-----------------------------------------------------
-        if (tempo_enemy_reset >= 20.0 && tempo_enemy >= 0.0)                           
+        //RESET TIME-----------------------------------------------------
+        if (tempo_enemy_reset >= 20.0 && tempo_enemy >= 0.0)
         {
             printf("\nCERO\t");
             tempo_enemy = -15.0;
             tempo_enemy_reset = 0.0;
         }
 
-//MOVIMIENTO-----------------------------------------------------
+        //MOVIMIENTO-----------------------------------------------------
         for (cont_futbol = 0; cont_futbol < CANT; cont_futbol++)
         {
             mov_futbol(futbol[cont_futbol], mapa);
         }
-//DAMAGE-----------------------------------------------------
+        //DAMAGE-----------------------------------------------------
         for (cont_futbol = 0; cont_futbol < CANT; cont_futbol++)
         {
             jg[0].vida = damage(jg[0], futbol[cont_futbol]);
         }
-//MUELTO-----------------------------------------------------
+        //MUELTO-----------------------------------------------------
         for (cont_futbol = 0; cont_futbol < CANT; cont_futbol++)
         {
             if (futbol[cont_futbol].hp <= 0.0 && futbol[cont_futbol].flag_death)
@@ -327,14 +331,19 @@ int main()
                     al_convert_mask_to_alpha(futbol_img, al_map_rgba(255, 0, 0, 255));
                 }
             }
+
             al_flip_display();
         }
     }
+    printf("GAME OVER\n");
     if(puntuacion>0)
-    {
-        printf("GAME OVER\n");
-        save_rank(rank, recorrido);             //Ingresar nombre, y puntuación al ranking.
+    {    
+        printf("Ingrese su nombre: ");
+        scanf("%s", &nuevo_ingreso);
+        comparacion_rank(puntuacion, *nuevo_ingreso); 
     }
+
     exit_game();
     return 0;
+
 }
