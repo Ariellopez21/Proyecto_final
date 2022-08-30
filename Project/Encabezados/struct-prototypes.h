@@ -36,7 +36,6 @@ struct ranking
     char name[LARGE];
     int points;
 };
-struct ranking rank[MAX_RANK];
 /*_______________________________________________________________________________________________
 /////////////////////////////////////////////PROTOTIPOS//////////////////////////////////////////
 _________________________________________________________________________________________________*/
@@ -59,15 +58,16 @@ bool coll_arriba(char mapa[SIZE][SIZE], int x, int y, bool coll_up);
 bool coll_abajo(char mapa[SIZE][SIZE], int x, int y, bool coll_down);
 
 //FUNCIONES DEL MENÚ y PAUSA:
-bool func_menu();
+bool func_menu(ranking rank[MAX_RANK]);
 void func_instructions();
 bool func_pause(bool pausa);
 
 //FUNCIONES PARA RANKING:
-bool func_rank();
+bool func_rank(ranking rank[MAX_RANK]);
 void reed_rank(ranking rank[MAX_RANK], int* Nreal);
 void show_rank(ranking rank[MAX_RANK], int Nreal);
 void save_rank(ranking rank[MAX_RANK], int Nreal);
+void comparacion_rank(ranking rank[MAX_RANK], int tus_puntos);
 
 //FUNCIÓN PARA DIBUJAR Y PARA DESTRUIR ELEMENTOS:
 void DRAW_MAP_SINCE_MAPA(char dibujado[SIZE][SIZE], ALLEGRO_BITMAP* sky, ALLEGRO_BITMAP* platform, ALLEGRO_BITMAP* dirt);

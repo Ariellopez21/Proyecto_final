@@ -76,6 +76,7 @@
     <Allegro_AddonColor>true</Allegro_AddonColor>
     <Allegro_AddonMemfile>true</Allegro_AddonMemfile>
     <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
+    <Allegro_AddonTTF>true</Allegro_AddonTTF>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Allegro_AddonImage>true</Allegro_AddonImage>
@@ -83,6 +84,7 @@
     <Allegro_AddonColor>true</Allegro_AddonColor>
     <Allegro_AddonMemfile>true</Allegro_AddonMemfile>
     <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
+    <Allegro_AddonTTF>true</Allegro_AddonTTF>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -168,7 +170,6 @@
     <Text Include="Archivos\Mapa_inicial.txt" />
     <Text Include="Archivos\Mapa_jefe.txt" />
     <Text Include="Archivos\rankingR.txt" />
-    <Text Include="Archivos\wall_enemy.txt" />
     <Text Include="x64\Debug\Project.Build.CppClean.log" />
     <Text Include="x64\Debug\Project.log" />
     <Text Include="x64\Debug\Project.vcxproj.FileListAbsolute.txt" />
@@ -210,6 +211,9 @@
   </ItemGroup>
   <ItemGroup>
     <Object Include="x64\Debug\principal.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Font\sanes.TTF" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,6 +6,7 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
 #include "Encabezados/variables_globales.h"
 #include "Encabezados/struct-prototypes.h"
@@ -21,15 +22,16 @@ int main()
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////DECLARAR VARIABLES////////////////////////////////////////
     _________________________________________________________________________________________________*/
-    int x = 0, y = 0, i = 0, j = 0, tipo = 5, cont_futbol = 0, puntuacion = 0, exp = 0, recorrido = 0;
+    int x = 0, y = 0, i = 0, j = 0, tipo = 3, cont_futbol = 0, puntuacion = 0, exp = 0, recorrido = 0;
     float tempo_enemy = -12.0, tempo_enemy_reset = 0.0, tiempo = 0.0;
     int mouseX = 10, mouseY = 10, MouseSpeed = 5;
-    char mapa[SIZE][SIZE], nuevo_ingreso[MAX_LINE];
+    char mapa[SIZE][SIZE];
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
     int mantener_z = VALOR_INIT_SALTO;
     bool pausa = false, flag_key_p_true = false, flag_key_x_true = false,
         coll_left = false, coll_right = false, coll_up = false, coll_down = false;
+    struct ranking rank[MAX_RANK];
     /*_______________________________________________________________________________________________
     ///////////////////////////////////////INICIAR ARCHIVO///////////////////////////////////////////
     _________________________________________________________________________________________________*/
@@ -41,12 +43,11 @@ int main()
     al_init_image_addon();
     al_install_keyboard();
     al_install_mouse();
-    al_init_primitives_addon();
+    al_init_font_addon();
+    al_init_ttf_addon();
     text_hp = al_create_builtin_font();
     text_points = al_create_builtin_font();
     text_exp = al_create_builtin_font();
-    escribir_name = al_create_builtin_font();
-    escanear_name = al_create_builtin_font();
     timer = al_create_timer(1.0 / 30.0);
     timer_enemy = al_create_timer(1.0);
     queue = al_create_event_queue();
@@ -112,7 +113,7 @@ int main()
     _________________________________________________________________________________________________*/
     reed_rank(rank, &recorrido);        //Lee el ranking
     show_rank(rank, recorrido);         //Corroborar que el ranking esté bien.
-    done = func_menu();
+    done = func_menu(rank);
     func_instructions();
     al_start_timer(timer);
     while (!done)
@@ -335,14 +336,11 @@ int main()
             al_flip_display();
         }
     }
-    printf("GAME OVER\n");
     if(puntuacion>0)
-    {    
-        printf("Ingrese su nombre: ");
-        scanf("%s", &nuevo_ingreso);
-        comparacion_rank(puntuacion, *nuevo_ingreso); 
+    {
+        printf("GAME OVER\n");
+        comparacion_rank(rank, puntuacion);
     }
-
     exit_game();
     return 0;
 

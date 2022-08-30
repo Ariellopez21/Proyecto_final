@@ -110,29 +110,43 @@ void save_rank(ranking rank[MAX_RANK], int Nreal)           //Introduzca su nomb
     }
     fclose(frank);
 }
-void comparacion_rank(int puntuacion, char nuevo_ingreso);
-
-void comparacion_rank(int puntuacion, char nuevo_ingreso)
+void comparacion_rank(ranking rank[MAX_RANK], int tus_puntos)
 {
-    int maximo = MAX_RANK-1, auxP;
-    char auxN[MAX_LINE];
-    bool mayor = true;
-    while (mayor)
+    int maximo = MAX_RANK - 1, Nreal=MAX_RANK;
+    char auxchar[MAX_LINE];
+    int auxint, i, j;
+    printf("Ingrese su nombre: ");
+    scanf("%s", &rank[10].name);
+    rank[10].points = tus_puntos;
+    for (i = 0; i < MAX_RANK; i++)
     {
-        if (puntuacion > rank[maximo].points)
-        {
-            printf("posicion %d: TU:%d > EL:%d\n", maximo - 1, puntuacion, rank[maximo].points);
-            auxP = rank[maximo].points;
-            rank[maximo].points = puntuacion;
-            rank[maximo + 1].points = auxP;
-            strcpy(auxN, rank[maximo].name);
-            strcpy(rank[maximo].name, &nuevo_ingreso);
-            strcpy(rank[maximo + 1].name, auxN);
-        }
-        else if (puntuacion < rank[maximo].points)
-            mayor = false;
-        maximo--;
-        if (maximo < 0)
-            mayor = false;
+        printf("Posicion %d -> nombre: %s, puntos: %d\n", i+1, rank[i].name, rank[i].points);
     }
+
+    for(i=0; i<MAX_RANK-1; i++)
+    {
+        for(j=0; j<MAX_RANK-1-i; j++)
+        {
+        if (rank[j].points > rank[j+1].points)
+            {
+                printf("CAMBIO %d -> nombre: %s, puntos: %d\n", maximo, rank[j].name, rank[j].points);
+                printf("CAMBIO %d -> nombre: %s, puntos: %d\n", maximo, rank[j+1].name, rank[j+1].points);
+                auxint = rank[j].points;
+                rank[j].points = rank[j+1].points;
+                rank[j+1].points = auxint;
+                strcpy(auxchar, rank[j].name);
+                strcpy(rank[j].name, rank[j+1].name);
+                strcpy(rank[j+1].name, auxchar);
+
+                printf("CAMBIO %d -> nombre: %s, puntos: %d\n", maximo, rank[j].name, rank[j].points);
+                printf("CAMBIO %d -> nombre: %s, puntos: %d\n", maximo, rank[j+1].name, rank[j+1].points);
+                printf("Si!\t\t\t\t\t");
+            }
+        }
+    }
+    for (int i = 0; i < MAX_RANK; i++)
+    {
+        printf("Posicion %d -> nombre: %s, puntos: %d\n", i + 1, rank[i].name, rank[i].points);
+    }
+    save_rank(rank, Nreal);
 }

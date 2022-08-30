@@ -71,7 +71,6 @@
     <Text Include="x64\Debug\Project.log" />
     <Text Include="x64\Debug\Project.vcxproj.FileListAbsolute.txt" />
     <Text Include="Archivos\rankingR.txt" />
-    <Text Include="Archivos\wall_enemy.txt" />
     <Text Include="Archivos\Map1.txt" />
     <Text Include="Archivos\Map2.txt" />
     <Text Include="Archivos\Map3.txt" />
@@ -181,5 +180,8 @@
   </ItemGroup>
   <ItemGroup>
     <Object Include="x64\Debug\principal.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Font\sanes.TTF" />
   </ItemGroup>
 </Project>
